@@ -1,30 +1,27 @@
+from __future__ import annotations
+
 from KBEDebug import *
 
+from assetsapi.user_type import AvatarDataFD
+
+
 class TAvatarData(dict):
-	"""
-	"""
-	def __init__(self):
-		"""
-		"""
-		dict.__init__(self)
 
-	def asDict(self):
-		for key, val in self.items():
-			return {"param1" : val[0], "param2" : val[1]}
+    def asDict(self) -> AvatarDataFD:
+        return {"param1": self[0], "param2": self[1]}
 
-	def createFromDict(self, dictData):
-		self[dictData["param1"]] = [dictData["param1"], dictData["param2"]]
-		return self
+    def createFromDict(self, dictData: AvatarDataFD) -> TAvatarData:
+        self[dictData["param1"]] = [dictData["param1"], dictData["param2"]]
+        return self
+
 
 class AVATAR_DATA_PICKLER:
-	def __init__(self):
-		pass
 
-	def createObjFromDict(self, dct) -> TAvatarData:
-		return TAvatarData().createFromDict(dct)
+    def createObjFromDict(self, dct: AvatarDataFD) -> TAvatarData:
+        return TAvatarData().createFromDict(dct)
 
-	def getDictFromObj(self, obj):
-		return obj.asDict()
+    def getDictFromObj(self, obj: TAvatarData) -> AvatarDataFD:
+        return obj.asDict()
 
-	def isSameType(self, obj):
-		return isinstance(obj, TAvatarData)
+    def isSameType(self, obj: TAvatarData) -> bool:
+        return isinstance(obj, TAvatarData)
