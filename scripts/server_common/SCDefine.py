@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import KBEngine
 import GlobalConst
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 
 # 服务端timer定义

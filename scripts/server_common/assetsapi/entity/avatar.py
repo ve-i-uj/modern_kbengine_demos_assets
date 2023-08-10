@@ -63,7 +63,7 @@ class _CellAvatarRemoteCallAPI(CellEntityCallAPI):
         component3: CellTestNoBaseComponentRemoteCallAPI
 
 
-class IBaseAvatarAPI(abc.ABC, BaseEntityAPI):
+class IBaseAvatarAPI(abc.ABC, ProxyEntityAPI):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:

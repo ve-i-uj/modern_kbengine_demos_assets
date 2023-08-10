@@ -971,7 +971,8 @@ class KBEngineBaseModuleAPI:
     def onBaseAppDataDel(key: str):
         """This function is called back when KBEngine.baseAppData is deleted.
 
-        Note: This callback function must be implemented in the portal module (kbengine_defaults.xml->entryScriptFile).
+        Note: This callback function must be implemented in the portal module
+        (kbengine_defaults.xml->entryScriptFile).
 
         parameters:
             key	Deleted data key
@@ -1019,7 +1020,7 @@ class KBEngineBaseModuleAPI:
         pass
 
     @staticmethod
-    def onLoseChargeCB(orderID: str, dbID: int, success: bool, datas: bytes):
+    def onLoseChargeCB(ordersID: str, dbID: int, success: bool, datas: bytes):
         """
         This function is called back when KBEngine.chargeResponse is called
         in and the order is lost or unknown.

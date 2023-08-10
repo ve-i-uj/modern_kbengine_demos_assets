@@ -73,7 +73,7 @@ class _CellAccountRemoteCallAPI(CellEntityCallAPI):
 
 
 
-class IBaseAccountAPI(abc.ABC, BaseEntityAPI):
+class IBaseAccountAPI(abc.ABC, ProxyEntityAPI):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
