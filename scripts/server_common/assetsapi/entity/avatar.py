@@ -19,7 +19,7 @@ from ..components.testnobase import ClientTestNoBaseComponentRemoteCallAPI, \
     CellTestNoBaseComponentRemoteCallAPI, BaseTestNoBaseComponentRemoteCallAPI
 
 
-class _ClientAvatarRemoteCallAPI(ClientEntityCallAPI):
+class ClientAvatarRemoteCallAPI(ClientEntityCallAPI):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -31,7 +31,7 @@ class _ClientAvatarRemoteCallAPI(ClientEntityCallAPI):
         component3: ClientTestNoBaseComponentRemoteCallAPI
 
 
-class _BaseAvatarRemoteCallAPI(BaseEntityCallAPI):
+class BaseAvatarRemoteCallAPI(BaseEntityCallAPI):
     """Remote call to base component of the entity 'Avatar'."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -45,7 +45,7 @@ class _BaseAvatarRemoteCallAPI(BaseEntityCallAPI):
             pass
 
 
-class _CellAvatarRemoteCallAPI(CellEntityCallAPI):
+class CellAvatarRemoteCallAPI(CellEntityCallAPI):
     """Remote call to cell component of the entity 'Avatar'."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -71,12 +71,12 @@ class IBaseAvatarAPI(abc.ABC, ProxyEntityAPI):
         roleType: int
 
         @property
-        def client(self) -> _ClientAvatarRemoteCallAPI:
-            return _ClientAvatarRemoteCallAPI()
+        def client(self) -> ClientAvatarRemoteCallAPI:
+            return ClientAvatarRemoteCallAPI()
 
         @property
-        def cell(self) -> _CellAvatarRemoteCallAPI:
-            return _CellAvatarRemoteCallAPI()
+        def cell(self) -> CellAvatarRemoteCallAPI:
+            return CellAvatarRemoteCallAPI()
 
         @abc.abstractmethod
         def createCell(self,
@@ -93,20 +93,20 @@ class ICellAvatarAPI(abc.ABC, CellEntityAPI):
         own_val: int
 
         @property
-        def base(self) -> _BaseAvatarRemoteCallAPI:
-            return _BaseAvatarRemoteCallAPI()
+        def base(self) -> BaseAvatarRemoteCallAPI:
+            return BaseAvatarRemoteCallAPI()
 
         @property
-        def client(self) -> _ClientAvatarRemoteCallAPI:
-            return _ClientAvatarRemoteCallAPI()
+        def client(self) -> ClientAvatarRemoteCallAPI:
+            return ClientAvatarRemoteCallAPI()
 
         @property
-        def allClients(self) -> _ClientAvatarRemoteCallAPI:
-            return _ClientAvatarRemoteCallAPI()
+        def allClients(self) -> ClientAvatarRemoteCallAPI:
+            return ClientAvatarRemoteCallAPI()
 
         @property
-        def otherClients(self) -> _ClientAvatarRemoteCallAPI:
-            return _ClientAvatarRemoteCallAPI()
+        def otherClients(self) -> ClientAvatarRemoteCallAPI:
+            return ClientAvatarRemoteCallAPI()
 
 
         @abc.abstractmethod

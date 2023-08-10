@@ -15,13 +15,13 @@ from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
 from ..typesxml import *
 
 
-class _ClientSpaceRemoteCallAPI(ClientEntityCallAPI):
+class ClientSpaceRemoteCallAPI(ClientEntityCallAPI):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class _BaseSpaceRemoteCallAPI(BaseEntityCallAPI):
+class BaseSpaceRemoteCallAPI(BaseEntityCallAPI):
     """Remote call to base component of the entity 'Space'."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -56,7 +56,7 @@ class _BaseSpaceRemoteCallAPI(BaseEntityCallAPI):
             pass
 
 
-class _CellSpaceRemoteCallAPI(CellEntityCallAPI):
+class CellSpaceRemoteCallAPI(CellEntityCallAPI):
     """Remote call to cell component of the entity 'Space'."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -85,8 +85,8 @@ class IBaseSpaceAPI(abc.ABC, BaseEntityAPI):
             return None
 
         @property
-        def cell(self) -> _CellSpaceRemoteCallAPI:
-            return _CellSpaceRemoteCallAPI()
+        def cell(self) -> CellSpaceRemoteCallAPI:
+            return CellSpaceRemoteCallAPI()
 
         @abc.abstractmethod
         def loginToSpace(self,
@@ -130,8 +130,8 @@ class ICellSpaceAPI(abc.ABC, CellEntityAPI):
         spaceUType: int
 
         @property
-        def base(self) -> _BaseSpaceRemoteCallAPI:
-            return _BaseSpaceRemoteCallAPI()
+        def base(self) -> BaseSpaceRemoteCallAPI:
+            return BaseSpaceRemoteCallAPI()
 
         @property
         def client(self) -> None:

@@ -15,7 +15,7 @@ from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
 from ..typesxml import *
 
 
-class _ClientAccountRemoteCallAPI(ClientEntityCallAPI):
+class ClientAccountRemoteCallAPI(ClientEntityCallAPI):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -34,7 +34,7 @@ class _ClientAccountRemoteCallAPI(ClientEntityCallAPI):
 
 
 
-class _BaseAccountRemoteCallAPI(BaseEntityCallAPI):
+class BaseAccountRemoteCallAPI(BaseEntityCallAPI):
     """Remote call to base component of the entity 'Account'."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -65,7 +65,7 @@ class _BaseAccountRemoteCallAPI(BaseEntityCallAPI):
             pass
 
 
-class _CellAccountRemoteCallAPI(CellEntityCallAPI):
+class CellAccountRemoteCallAPI(CellEntityCallAPI):
     """Remote call to cell component of the entity 'Account'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
@@ -84,8 +84,8 @@ class IBaseAccountAPI(abc.ABC, ProxyEntityAPI):
         lastClientIpAddr: int
 
         @property
-        def client(self) -> _ClientAccountRemoteCallAPI:
-            return _ClientAccountRemoteCallAPI()
+        def client(self) -> ClientAccountRemoteCallAPI:
+            return ClientAccountRemoteCallAPI()
 
         @property
         def cell(self) -> None:
@@ -128,20 +128,20 @@ class ICellAccountAPI(abc.ABC, CellEntityAPI):
 
 
         @property
-        def base(self) -> _BaseAccountRemoteCallAPI:
-            return _BaseAccountRemoteCallAPI()
+        def base(self) -> BaseAccountRemoteCallAPI:
+            return BaseAccountRemoteCallAPI()
 
         @property
-        def client(self) -> _ClientAccountRemoteCallAPI:
-            return _ClientAccountRemoteCallAPI()
+        def client(self) -> ClientAccountRemoteCallAPI:
+            return ClientAccountRemoteCallAPI()
 
         @property
-        def allClients(self) -> _ClientAccountRemoteCallAPI:
-            return _ClientAccountRemoteCallAPI()
+        def allClients(self) -> ClientAccountRemoteCallAPI:
+            return ClientAccountRemoteCallAPI()
 
         @property
-        def otherClients(self) -> _ClientAccountRemoteCallAPI:
-            return _ClientAccountRemoteCallAPI()
+        def otherClients(self) -> ClientAccountRemoteCallAPI:
+            return ClientAccountRemoteCallAPI()
 
 
 

@@ -15,19 +15,19 @@ from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
 from ..typesxml import *
 
 
-class _ClientStateRemoteCallAPI(ClientEntityCallAPI):
+class ClientStateRemoteCallAPI(ClientEntityCallAPI):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class _BaseStateRemoteCallAPI(BaseEntityCallAPI):
+class BaseStateRemoteCallAPI(BaseEntityCallAPI):
     """Remote call to base component of the entity 'State'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class _CellStateRemoteCallAPI(CellEntityCallAPI):
+class CellStateRemoteCallAPI(CellEntityCallAPI):
     """Remote call to cell component of the entity 'State'."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -50,8 +50,8 @@ class IBaseStateAPI(abc.ABC, BaseEntityAPI):
             return None
 
         @property
-        def cell(self) -> _CellStateRemoteCallAPI:
-            return _CellStateRemoteCallAPI()
+        def cell(self) -> CellStateRemoteCallAPI:
+            return CellStateRemoteCallAPI()
 
 class ICellStateAPI(abc.ABC, CellEntityAPI):
     """None (cell component)."""

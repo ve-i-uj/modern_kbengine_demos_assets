@@ -11,7 +11,7 @@ from AVATAR_INFOS import TAvatarInfosList
 from AVATAR_DATA import TAvatarData
 
 from assetsapi.entity.account import IBaseAccountAPI
-from assetsapi.kbeapi.baseapp from assetsapi.kbeapi.baseapp import KBEngine
+from assetsapi.kbeapi.baseapp import KBEngine
 from assetsapi.kbeapi import ProxyEntityAPI
 
 logger = logging.getLogger()

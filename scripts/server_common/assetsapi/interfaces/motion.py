@@ -15,19 +15,19 @@ from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
 from ..typesxml import *
 
 
-class _ClientMotionRemoteCallAPI(ClientEntityCallAPI):
+class ClientMotionRemoteCallAPI(ClientEntityCallAPI):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class _BaseMotionRemoteCallAPI(BaseEntityCallAPI):
+class BaseMotionRemoteCallAPI(BaseEntityCallAPI):
     """Remote call to base component of the entity 'Motion'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class _CellMotionRemoteCallAPI(CellEntityCallAPI):
+class CellMotionRemoteCallAPI(CellEntityCallAPI):
     """Remote call to cell component of the entity 'Motion'."""
 
     if not assetsapi.IN_THE_ENGINE: pass

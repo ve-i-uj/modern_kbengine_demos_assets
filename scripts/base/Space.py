@@ -1,166 +1,183 @@
-# -*- coding: utf-8 -*-
-from assetsapi.kbeapi.baseapp import KBEngine
-import random
-import SCDefine
 import copy
 import math
-
 import logging
+import xml.etree.ElementTree as etree
+
+import d_spaces_spawns
+import d_spaces
+import SCDefine
+from interfaces.GameObject import GameObject
+
+from assetsapi.kbeapi.baseapp import KBEngine
+from assetsapi.entity.space import IBaseSpaceAPI
+from assetsapi.entity.avatar import BaseAvatarRemoteCallAPI
+
+from assetsapi.typesxml import EntityId
 
 logger = logging.getLogger()
 
-from interfaces.GameObject import GameObject
-import d_entities
-import d_spaces
-import d_spaces_spawns
-import xml.etree.ElementTree as etree
 
-class Space(KBEngine.Entity, GameObject):
-	"""
-	一个可操控cellapp上真正space的实体
-	注意：它是一个实体，并不是真正的space，真正的space存在于cellapp的内存中，通过这个实体与之关联并操控space。
-	"""
-	def __init__(self):
-		KBEngine.Entity.__init__(self)
-		GameObject.__init__(self)
-		self.createCellEntityInNewSpace(None)
+class Space(IBaseSpaceAPI, KBEngine.Entity, GameObject):
+    """An entity that can manipulate the real space on the cellapp.
 
-		self.spaceUTypeB = self.cellData["spaceUType"]
+    Note: It is an entity, not a real space. The real space exists in the
+    memory of cellapp, and it is associated with and manipulated through this
+    entity.
+    """
 
-		self.spaceResName = d_spaces.datas.get(self.spaceUTypeB)['resPath']
+    def __init__(self):
+        KBEngine.Entity.__init__(self)
+        GameObject.__init__(self)
+        self.createCellEntityInNewSpace(None)
 
-		# 这个地图上创建的entity总数
-		self.tmpCreateEntityDatas = copy.deepcopy(d_spaces_spawns.datas.get(self.spaceUTypeB, []))
+        self.spaceUTypeB = self.cellData["spaceUType"]
 
-		self.avatars = {}
-		self.createSpawnPointDatas()
+        space_data = d_spaces.datas.get(self.spaceUTypeB)
+        assert space_data is not None
+        self.spaceResName = space_data['resPath']
 
-	def createSpawnPointDatas(self):
-		"""
-		"""
-		res = r"scripts\data\spawnpoints\%s_spawnpoints.xml" % (self.spaceResName.replace("\\", "/").split("/")[-1])
-		if(len(self.spaceResName) == 0 or not KBEngine.hasRes(res)):
-			return
+        # The total number of entities created on this map
+        self.tmpCreateEntityDatas = copy.deepcopy(d_spaces_spawns.datas.get(self.spaceUTypeB, []))
 
-		res = KBEngine.getResFullPath(res)
+        self.avatars: dict[EntityId, BaseAvatarRemoteCallAPI] = {}
+        self.createSpawnPointDatas()
 
-		tree = etree.parse(res)
-		root = tree.getroot()
+    def createSpawnPointDatas(self):
+        res = r"scripts\data\spawnpoints\%s_spawnpoints.xml" % (
+            self.spaceResName.replace("\\", "/").split("/")[-1]
+        )
+        if (len(self.spaceResName) == 0 or not KBEngine.hasRes(res)):
+            return
 
-		DEBUG_MSG("Space::createSpawnPointDatas: %s" % (res))
+        res = KBEngine.getResFullPath(res)
 
-		for child in root:
-			positionNode = child[0][0]
-			directionNode = child[0][1]
-			scaleNode = child[0][2]
+        tree: etree.ElementTree = etree.parse(res)
+        root: etree.Element = tree.getroot()
 
-			scale = int(((float(scaleNode[0].text) + float(scaleNode[1].text) + float(scaleNode[2].text)) / 3.0) * 10)
-			position = (float(positionNode[0].text), float(positionNode[1].text), float(positionNode[2].text))
-			direction = [float(directionNode[0].text) / 360 * (math.pi * 2), float(directionNode[1].text) / 360 * (math.pi * 2), float(directionNode[2].text) / 360 * (math.pi * 2)]
+        logger.debug("Space::createSpawnPointDatas: %s" % (res))
 
-			if direction[0] - math.pi > 0.0:
-				direction[0] -= math.pi * 2
-			if direction[1] - math.pi > 0.0:
-				direction[1] -= math.pi * 2
-			if direction[2] - math.pi > 0.0:
-				direction[2] -= math.pi * 2
+        for child in root:
+            positionNode = child[0][0]
+            directionNode = child[0][1]
+            scaleNode = child[0][2]
 
-			self.tmpCreateEntityDatas.append([int(child.attrib['name']), \
-			position, \
-			direction, \
-			scale, \
-			])
+            assert scaleNode[0].text is not None
+            assert scaleNode[1].text is not None
+            assert scaleNode[2].text is not None
 
-	def spawnOnTimer(self, tid):
-		"""
-		出生怪物
-		"""
-		if len(self.tmpCreateEntityDatas) <= 0:
-			self.delTimer(tid)
-			return
+            scale = int(
+                (
+                    (float(scaleNode[0].text) + float(scaleNode[1].text) + float(scaleNode[2].text)) / 3.0
+                ) * 10
+            )
 
-		datas = self.tmpCreateEntityDatas.pop(0)
+            assert positionNode[0].text is not None
+            assert positionNode[1].text is not None
+            assert positionNode[2].text is not None
 
-		if datas is None:
-			ERROR_MSG("Space::onTimer: spawn %i is error!" % datas[0])
+            position = (
+                float(positionNode[0].text),
+                float(positionNode[1].text),
+                float(positionNode[2].text)
+            )
 
-		KBEngine.createEntityAnywhere("SpawnPoint",
-									{"spawnEntityNO"	: datas[0], 	\
-									"position"			: datas[1], 	\
-									"direction"			: datas[2],		\
-									"modelScale"		: datas[3],		\
-									"createToCell"		: self.cell})
+            assert directionNode[0].text is not None
+            assert directionNode[1].text is not None
+            assert directionNode[2].text is not None
 
-	def loginToSpace(self, avatarEntityCall, context):
-		"""
-		defined method.
-		某个玩家请求登陆到这个space中
-		"""
-		avatarEntityCall.createCell(self.cell)
-		self.onEnter(avatarEntityCall)
+            direction = [
+                float(directionNode[0].text) / 360 * (math.pi * 2),
+                float(directionNode[1].text) / 360 * (math.pi * 2),
+                float(directionNode[2].text) / 360 * (math.pi * 2)
+            ]
 
-	def logoutSpace(self, entityID):
-		"""
-		defined method.
-		某个玩家请求登出这个space
-		"""
-		self.onLeave(entityID)
+            if direction[0] - math.pi > 0.0:
+                direction[0] -= math.pi * 2
+            if direction[1] - math.pi > 0.0:
+                direction[1] -= math.pi * 2
+            if direction[2] - math.pi > 0.0:
+                direction[2] -= math.pi * 2
 
-	def teleportSpace(self, entityCall, position, direction, context):
-		"""
-		defined method.
-		请求进入某个space中
-		"""
-		entityCall.cell.onTeleportSpaceCB(self.cell, self.spaceUTypeB, position, direction)
+            self.tmpCreateEntityDatas.append([int(child.attrib['name']),
+                                              position,
+                                              direction,
+                                              scale,
+                                              ])
 
-	def onTimer(self, tid, userArg):
-		"""
-		KBEngine method.
-		引擎回调timer触发
-		"""
-		#DEBUG_MSG("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
-		if SCDefine.TIMER_TYPE_SPACE_SPAWN_TICK == userArg:
-			self.spawnOnTimer(tid)
+    def spawnOnTimer(self, tid: int):
+        """Spawn monsters."""
+        if len(self.tmpCreateEntityDatas) <= 0:
+            self.delTimer(tid)
+            return
 
-		GameObject.onTimer(self, tid, userArg)
+        datas = self.tmpCreateEntityDatas.pop(0)
 
-	def onEnter(self, entityCall):
-		"""
-		defined method.
-		进入场景
-		"""
-		self.avatars[entityCall.id] = entityCall
+        if datas is None:
+            logger.error("Space::onTimer: spawn %i is error!" % datas[0])
 
-		if self.cell is not None:
-			self.cell.onEnter(entityCall)
+        KBEngine.createEntityAnywhere("SpawnPoint",
+                                      {"spawnEntityNO": datas[0],
+                                       "position": datas[1],
+                                       "direction": datas[2],
+                                       "modelScale": datas[3],
+                                       "createToCell": self.cell})
 
-	def onLeave(self, entityID):
-		"""
-		defined method.
-		离开场景
-		"""
-		if entityID in self.avatars:
-			del self.avatars[entityID]
+    def loginToSpace(self, avatarEntityCall: BaseAvatarRemoteCallAPI, context: dict):
+        """A player requests to log in to this space.
 
-		if self.cell is not None:
-			self.cell.onLeave(entityID)
+        defined method.
+        """
+        assert self.cell is not None
+        avatarEntityCall.createCell(self.cell)
+        self.onEnter(avatarEntityCall)
 
-	def onLoseCell(self):
-		"""
-		KBEngine method.
-		entity的cell部分实体丢失
-		"""
-		KBEngine.globalData["Spaces"].onSpaceLoseCell(self.spaceUTypeB, self.spaceKey)
-		GameObject.onLoseCell(self)
+    def logoutSpace(self, entityID):
+        """A player requests to log out of this space.
 
-	def onGetCell(self):
-		"""
-		KBEngine method.
-		entity的cell部分实体被创建成功
-		"""
-		DEBUG_MSG("Space::onGetCell: %i" % self.id)
-		self.addTimer(0.1, 0.1, SCDefine.TIMER_TYPE_SPACE_SPAWN_TICK)
-		KBEngine.globalData["Spaces"].onSpaceGetCell(self.spaceUTypeB, self, self.spaceKey)
-		GameObject.onGetCell(self)
+        defined method.
+        """
+        self.onLeave(entityID)
 
+    def teleportSpace(self, entityCall, position, direction, context):
+        """Request to enter a space.
 
+        defined method.
+        """
+        entityCall.cell.onTeleportSpaceCB(self.cell, self.spaceUTypeB, position, direction)
+
+    def onTimer(self, timerHandle: int, userData: int = 0):
+        if SCDefine.TIMER_TYPE_SPACE_SPAWN_TICK == userData:
+            self.spawnOnTimer(timerHandle)
+
+        GameObject.onTimer(self, timerHandle, userData)
+
+    def onEnter(self, entityCall: BaseAvatarRemoteCallAPI):
+        """Enter the scene.
+
+        defined method.
+        """
+        self.avatars[entityCall.id] = entityCall
+
+        if self.cell is not None:
+            self.cell.onEnter(entityCall)
+
+    def onLeave(self, entityID):
+        """Leave the scene.
+
+        defined method.
+        """
+        if entityID in self.avatars:
+            del self.avatars[entityID]
+
+        if self.cell is not None:
+            self.cell.onLeave(entityID)
+
+    def onLoseCell(self):
+        KBEngine.globalData["Spaces"].onSpaceLoseCell(self.spaceUTypeB, self.spaceKey)
+        GameObject.onLoseCell(self)
+
+    def onGetCell(self):
+        logger.debug("Space::onGetCell: %i" % self.id)
+        self.addTimer(0.1, 0.1, SCDefine.TIMER_TYPE_SPACE_SPAWN_TICK)
+        KBEngine.globalData["Spaces"].onSpaceGetCell(self.spaceUTypeB, self, self.spaceKey)
+        GameObject.onGetCell(self)

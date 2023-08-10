@@ -15,7 +15,7 @@ from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
 from ..typesxml import *
 
 
-class _ClientDialogRemoteCallAPI(ClientEntityCallAPI):
+class ClientDialogRemoteCallAPI(ClientEntityCallAPI):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -38,13 +38,13 @@ class _ClientDialogRemoteCallAPI(ClientEntityCallAPI):
 
 
 
-class _BaseDialogRemoteCallAPI(BaseEntityCallAPI):
+class BaseDialogRemoteCallAPI(BaseEntityCallAPI):
     """Remote call to base component of the entity 'Dialog'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class _CellDialogRemoteCallAPI(CellEntityCallAPI):
+class CellDialogRemoteCallAPI(CellEntityCallAPI):
     """Remote call to cell component of the entity 'Dialog'."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -64,12 +64,12 @@ class IBaseDialogAPI(abc.ABC, BaseEntityAPI):
 
 
         @property
-        def client(self) -> _ClientDialogRemoteCallAPI:
-            return _ClientDialogRemoteCallAPI()
+        def client(self) -> ClientDialogRemoteCallAPI:
+            return ClientDialogRemoteCallAPI()
 
         @property
-        def cell(self) -> _CellDialogRemoteCallAPI:
-            return _CellDialogRemoteCallAPI()
+        def cell(self) -> CellDialogRemoteCallAPI:
+            return CellDialogRemoteCallAPI()
 
 class ICellDialogAPI(abc.ABC, CellEntityAPI):
     """None (cell component)."""
@@ -82,16 +82,16 @@ class ICellDialogAPI(abc.ABC, CellEntityAPI):
             return None
 
         @property
-        def client(self) -> _ClientDialogRemoteCallAPI:
-            return _ClientDialogRemoteCallAPI()
+        def client(self) -> ClientDialogRemoteCallAPI:
+            return ClientDialogRemoteCallAPI()
 
         @property
-        def allClients(self) -> _ClientDialogRemoteCallAPI:
-            return _ClientDialogRemoteCallAPI()
+        def allClients(self) -> ClientDialogRemoteCallAPI:
+            return ClientDialogRemoteCallAPI()
 
         @property
-        def otherClients(self) -> _ClientDialogRemoteCallAPI:
-            return _ClientDialogRemoteCallAPI()
+        def otherClients(self) -> ClientDialogRemoteCallAPI:
+            return ClientDialogRemoteCallAPI()
 
 
         @abc.abstractmethod

@@ -15,19 +15,19 @@ from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
 from ..typesxml import *
 
 
-class _ClientSpawnPointRemoteCallAPI(ClientEntityCallAPI):
+class ClientSpawnPointRemoteCallAPI(ClientEntityCallAPI):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class _BaseSpawnPointRemoteCallAPI(BaseEntityCallAPI):
+class BaseSpawnPointRemoteCallAPI(BaseEntityCallAPI):
     """Remote call to base component of the entity 'SpawnPoint'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class _CellSpawnPointRemoteCallAPI(CellEntityCallAPI):
+class CellSpawnPointRemoteCallAPI(CellEntityCallAPI):
     """Remote call to cell component of the entity 'SpawnPoint'."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -51,8 +51,8 @@ class IBaseSpawnPointAPI(abc.ABC, BaseEntityAPI):
             return None
 
         @property
-        def cell(self) -> _CellSpawnPointRemoteCallAPI:
-            return _CellSpawnPointRemoteCallAPI()
+        def cell(self) -> CellSpawnPointRemoteCallAPI:
+            return CellSpawnPointRemoteCallAPI()
 
 class ICellSpawnPointAPI(abc.ABC, CellEntityAPI):
     """None (cell component)."""

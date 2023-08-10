@@ -15,13 +15,13 @@ from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
 from ..typesxml import *
 
 
-class _ClientSpacesRemoteCallAPI(ClientEntityCallAPI):
+class ClientSpacesRemoteCallAPI(ClientEntityCallAPI):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class _BaseSpacesRemoteCallAPI(BaseEntityCallAPI):
+class BaseSpacesRemoteCallAPI(BaseEntityCallAPI):
     """Remote call to base component of the entity 'Spaces'."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -62,7 +62,7 @@ class _BaseSpacesRemoteCallAPI(BaseEntityCallAPI):
             pass
 
 
-class _CellSpacesRemoteCallAPI(CellEntityCallAPI):
+class CellSpacesRemoteCallAPI(CellEntityCallAPI):
     """Remote call to cell component of the entity 'Spaces'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
@@ -131,8 +131,8 @@ class ICellSpacesAPI(abc.ABC, CellEntityAPI):
 
 
         @property
-        def base(self) -> _BaseSpacesRemoteCallAPI:
-            return _BaseSpacesRemoteCallAPI()
+        def base(self) -> BaseSpacesRemoteCallAPI:
+            return BaseSpacesRemoteCallAPI()
 
         @property
         def client(self) -> None:

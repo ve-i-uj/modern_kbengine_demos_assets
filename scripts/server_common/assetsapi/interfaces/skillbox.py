@@ -15,7 +15,7 @@ from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
 from ..typesxml import *
 
 
-class _ClientSkillBoxRemoteCallAPI(ClientEntityCallAPI):
+class ClientSkillBoxRemoteCallAPI(ClientEntityCallAPI):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -29,13 +29,13 @@ class _ClientSkillBoxRemoteCallAPI(ClientEntityCallAPI):
 
 
 
-class _BaseSkillBoxRemoteCallAPI(BaseEntityCallAPI):
+class BaseSkillBoxRemoteCallAPI(BaseEntityCallAPI):
     """Remote call to base component of the entity 'SkillBox'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class _CellSkillBoxRemoteCallAPI(CellEntityCallAPI):
+class CellSkillBoxRemoteCallAPI(CellEntityCallAPI):
     """Remote call to cell component of the entity 'SkillBox'."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -66,12 +66,12 @@ class IBaseSkillBoxAPI(abc.ABC, BaseEntityAPI):
 
 
         @property
-        def client(self) -> _ClientSkillBoxRemoteCallAPI:
-            return _ClientSkillBoxRemoteCallAPI()
+        def client(self) -> ClientSkillBoxRemoteCallAPI:
+            return ClientSkillBoxRemoteCallAPI()
 
         @property
-        def cell(self) -> _CellSkillBoxRemoteCallAPI:
-            return _CellSkillBoxRemoteCallAPI()
+        def cell(self) -> CellSkillBoxRemoteCallAPI:
+            return CellSkillBoxRemoteCallAPI()
 
 class ICellSkillBoxAPI(abc.ABC, CellEntityAPI):
     """None (cell component)."""
@@ -85,16 +85,16 @@ class ICellSkillBoxAPI(abc.ABC, CellEntityAPI):
             return None
 
         @property
-        def client(self) -> _ClientSkillBoxRemoteCallAPI:
-            return _ClientSkillBoxRemoteCallAPI()
+        def client(self) -> ClientSkillBoxRemoteCallAPI:
+            return ClientSkillBoxRemoteCallAPI()
 
         @property
-        def allClients(self) -> _ClientSkillBoxRemoteCallAPI:
-            return _ClientSkillBoxRemoteCallAPI()
+        def allClients(self) -> ClientSkillBoxRemoteCallAPI:
+            return ClientSkillBoxRemoteCallAPI()
 
         @property
-        def otherClients(self) -> _ClientSkillBoxRemoteCallAPI:
-            return _ClientSkillBoxRemoteCallAPI()
+        def otherClients(self) -> ClientSkillBoxRemoteCallAPI:
+            return ClientSkillBoxRemoteCallAPI()
 
 
         @abc.abstractmethod

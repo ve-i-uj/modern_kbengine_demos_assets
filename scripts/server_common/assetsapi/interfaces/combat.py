@@ -15,7 +15,7 @@ from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
 from ..typesxml import *
 
 
-class _ClientCombatRemoteCallAPI(ClientEntityCallAPI):
+class ClientCombatRemoteCallAPI(ClientEntityCallAPI):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -28,13 +28,13 @@ class _ClientCombatRemoteCallAPI(ClientEntityCallAPI):
 
 
 
-class _BaseCombatRemoteCallAPI(BaseEntityCallAPI):
+class BaseCombatRemoteCallAPI(BaseEntityCallAPI):
     """Remote call to base component of the entity 'Combat'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class _CellCombatRemoteCallAPI(CellEntityCallAPI):
+class CellCombatRemoteCallAPI(CellEntityCallAPI):
     """Remote call to cell component of the entity 'Combat'."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -61,12 +61,12 @@ class IBaseCombatAPI(abc.ABC, BaseEntityAPI):
 
 
         @property
-        def client(self) -> _ClientCombatRemoteCallAPI:
-            return _ClientCombatRemoteCallAPI()
+        def client(self) -> ClientCombatRemoteCallAPI:
+            return ClientCombatRemoteCallAPI()
 
         @property
-        def cell(self) -> _CellCombatRemoteCallAPI:
-            return _CellCombatRemoteCallAPI()
+        def cell(self) -> CellCombatRemoteCallAPI:
+            return CellCombatRemoteCallAPI()
 
 class ICellCombatAPI(abc.ABC, CellEntityAPI):
     """None (cell component)."""
@@ -80,16 +80,16 @@ class ICellCombatAPI(abc.ABC, CellEntityAPI):
             return None
 
         @property
-        def client(self) -> _ClientCombatRemoteCallAPI:
-            return _ClientCombatRemoteCallAPI()
+        def client(self) -> ClientCombatRemoteCallAPI:
+            return ClientCombatRemoteCallAPI()
 
         @property
-        def allClients(self) -> _ClientCombatRemoteCallAPI:
-            return _ClientCombatRemoteCallAPI()
+        def allClients(self) -> ClientCombatRemoteCallAPI:
+            return ClientCombatRemoteCallAPI()
 
         @property
-        def otherClients(self) -> _ClientCombatRemoteCallAPI:
-            return _ClientCombatRemoteCallAPI()
+        def otherClients(self) -> ClientCombatRemoteCallAPI:
+            return ClientCombatRemoteCallAPI()
 
 
         @abc.abstractmethod
