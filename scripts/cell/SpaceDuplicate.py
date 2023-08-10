@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import random
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 from Space import Space
 import d_entities
 import d_spaces
@@ -23,7 +25,7 @@ class SpaceDuplicate(Space):
 		KBEngine method.
 		引擎回调timer触发
 		"""
-		#DEBUG_MSG("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
+		#logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
 		if SCDefine.TIMER_TYPE_HEARDBEAT == userArg:
 			self.onCheckDestroyTimer()
 		
@@ -34,7 +36,7 @@ class SpaceDuplicate(Space):
 			return
 		
 		# 没人了则销毁
-		DEBUG_MSG("SpaceDuplicate::onCheckDestroyTimer: %i" % (self.id))
+		logger.debug("SpaceDuplicate::onCheckDestroyTimer: %i" % (self.id))
 		self.destroy()
 		
 	def onEnter(self, entityCall):

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import GlobalDefine
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 from interfaces.GameObject import GameObject
 from interfaces.Combat import Combat
 from interfaces.Spell import Spell
@@ -64,7 +66,7 @@ class Avatar(KBEngine.Entity,
 		KBEngine method.
 		引擎回调timer触发
 		"""
-		#DEBUG_MSG("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
+		#logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
 		GameObject.onTimer(self, tid, userArg)
 		Spell.onTimer(self, tid, userArg)
 		
@@ -73,21 +75,21 @@ class Avatar(KBEngine.Entity,
 		KBEngine method.
 		绑定了一个观察者(客户端)
 		"""
-		DEBUG_MSG("Avatar::onGetWitness: %i." % self.id)
+		logger.debug("Avatar::onGetWitness: %i." % self.id)
 
 	def onLoseWitness(self):
 		"""
 		KBEngine method.
 		解绑定了一个观察者(客户端)
 		"""
-		DEBUG_MSG("Avatar::onLoseWitness: %i." % self.id)
+		logger.debug("Avatar::onLoseWitness: %i." % self.id)
 	
 	def onDestroy(self):
 		"""
 		KBEngine method.
 		entity销毁
 		"""
-		DEBUG_MSG("Avatar::onDestroy: %i." % self.id)
+		logger.debug("Avatar::onDestroy: %i." % self.id)
 		Teleport.onDestroy(self)
 		Combat.onDestroy(self)
 		
@@ -99,7 +101,7 @@ class Avatar(KBEngine.Entity,
 		if exposed != self.id:
 			return
 			
-		DEBUG_MSG("Avatar::relive: %i, type=%i." % (self.id, type))
+		logger.debug("Avatar::relive: %i, type=%i." % (self.id, type))
 		
 		# 回城复活
 		if type == 0:

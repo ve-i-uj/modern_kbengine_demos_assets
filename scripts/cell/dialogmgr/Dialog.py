@@ -2,10 +2,12 @@
 #
 """
 """
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import dialogmgr.funcs as funcs
 import GlobalDefine
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 
 class Dialog:
 	"""
@@ -36,7 +38,7 @@ class Dialog:
 			try:
 				self.__funcs[func] = funcs.g_funcs[func](datas.get("funcargs%i" % (idx + 1)))
 			except Exception as errstr:
-				ERROR_MSG("Dialog:__init__: errstr=%s, func=%s" % (errstr, func))
+				logger.error("Dialog:__init__: errstr=%s, func=%s" % (errstr, func))
 				
 	def getTitle(self):
 		return self.__title
@@ -63,7 +65,7 @@ class Dialog:
 	def onTalk(self, avatar, talker):
 		"""
 		"""
-		INFO_MSG("onTalk title=%s, func=%s, menus=%s, body=%s" % (self.__title, self.__funcs, self.__menus, self.__body))
+		logger.info("onTalk title=%s, func=%s, menus=%s, body=%s" % (self.__title, self.__funcs, self.__menus, self.__body))
 		
 		# 执行功能
 		self.do(avatar, talker)

@@ -2,7 +2,9 @@
 import KBEngine
 import skills
 import GlobalConst
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 class Spell:
 	def __init__(self):
@@ -26,7 +28,7 @@ class Spell:
 		"""
 		buff的tick
 		"""
-		DEBUG_MSG("onBuffTick:%i" % tid)
+		logger.debug("onBuffTick:%i" % tid)
 		
 	def spellTarget(self, skillID, targetID):
 		"""

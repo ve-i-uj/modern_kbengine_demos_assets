@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import KBEngine
 import KBExtra
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 from interfaces.GameObject import GameObject
 
 class NPC(KBEngine.Entity, GameObject):

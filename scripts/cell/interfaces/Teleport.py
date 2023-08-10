@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import SpaceContext
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 class Teleport:
 	def __init__(self):
@@ -29,7 +31,7 @@ class Teleport:
 		defined.
 		baseapp返回teleportSpace的回调
 		"""
-		DEBUG_MSG("Teleport::onTeleportSpaceCB: %i spaceID=%s, spaceUType=%i, pos=%s, dir=%s." % \
+		logger.debug("Teleport::onTeleportSpaceCB: %i spaceID=%s, spaceUType=%i, pos=%s, dir=%s." % \
 					(self.id, spaceCellEntityCall.id, spaceUType, position, direction))
 		
 		
@@ -40,7 +42,7 @@ class Teleport:
 		"""
 		KBEngine method.
 		"""
-		DEBUG_MSG("Teleport::onTeleportSuccess: %s" % (nearbyEntity))
+		logger.debug("Teleport::onTeleportSuccess: %s" % (nearbyEntity))
 		self.getCurrSpaceBase().onEnter(self.base)
 		self.spaceUType = self.getCurrSpace().spaceUType
 		

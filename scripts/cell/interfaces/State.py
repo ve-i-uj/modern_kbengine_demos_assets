@@ -4,7 +4,9 @@
 处理entity的一些状态
 """
 import GlobalDefine
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 
 class State:
 	"""
@@ -101,7 +103,7 @@ class State:
 		entity状态改变了
 		"""
 		self.changeSubState(GlobalDefine.ENTITY_SUB_STATE_NORMAL)
-		INFO_MSG("%s:onStateChanged_: %i oldstate=%i to newstate=%i, forbids=%s, subState=%i." % (self.getScriptName(), \
+		logger.info("%s:onStateChanged_: %i oldstate=%i to newstate=%i, forbids=%s, subState=%i." % (self.getScriptName(), \
 				self.id, oldstate, newstate, self._forbidCounter, self.subState))
 
 	def onSubStateChanged_(self, oldSubState, newSubState):
@@ -109,7 +111,7 @@ class State:
 		virtual method.
 		子状态改变了
 		"""
-		#INFO_MSG("%i oldSubstate=%i to newSubstate=%i" % (self.id, oldSubState, newSubState))
+		#logger.info("%i oldSubstate=%i to newSubstate=%i" % (self.id, oldSubState, newSubState))
 		pass
 		
 	#--------------------------------------------------------------------------------------------

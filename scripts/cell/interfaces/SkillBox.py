@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import skills
 import GlobalConst
 import SCDefine
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 class SkillBox:
 	def __init__(self):
@@ -32,7 +34,7 @@ class SkillBox:
 		if self.id != exposed:
 			return
 		
-		DEBUG_MSG("SkillBox::requestPull: %i skills=%i" % (self.id, len(self.skills)))
+		logger.debug("SkillBox::requestPull: %i skills=%i" % (self.id, len(self.skills)))
 		for skillID in self.skills:
 			self.client.onAddSkill(skillID)
 			

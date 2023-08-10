@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.baseapp import KBEngine
 import Functor
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 import d_entities
 import d_spaces
 import copy
@@ -46,7 +48,7 @@ class SpaceAlloc:
 		"""
 		一个space创建好后的回调
 		"""
-		DEBUG_MSG("Spaces::onSpaceCreatedCB: space %i. entityID=%i" % (self._utype, space.id))
+		logger.debug("Spaces::onSpaceCreatedCB: space %i. entityID=%i" % (self._utype, space.id))
 
 	def onSpaceLoseCell(self, spaceKey):
 		"""
@@ -58,7 +60,7 @@ class SpaceAlloc:
 		"""
 		space的cell创建好了
 		"""
-		DEBUG_MSG("Spaces::onSpaceGetCell: space %i. entityID=%i, spaceKey=%i" % (self._utype, spaceEntityCall.id, spaceKey))
+		logger.debug("Spaces::onSpaceGetCell: space %i. entityID=%i, spaceKey=%i" % (self._utype, spaceEntityCall.id, spaceKey))
 		self._spaces[spaceKey] = spaceEntityCall
 
 		pendingLogonEntities = self._pendingLogonEntities.pop(spaceKey, [])
@@ -88,7 +90,7 @@ class SpaceAlloc:
 		spaceKey = context.get("spaceKey", 0)
 		space = self.alloc({"spaceKey" : spaceKey})
 		if space is None:
-			ERROR_MSG("Spaces::loginToSpace: not found space %i. login to space is failed! spaces=%s" % (self._utype, str(self._spaces)))
+			logger.error("Spaces::loginToSpace: not found space %i. login to space is failed! spaces=%s" % (self._utype, str(self._spaces)))
 			return
 		
 		if space == CONST_WAIT_CREATE:
@@ -97,10 +99,10 @@ class SpaceAlloc:
 			else:
 				self._pendingLogonEntities[spaceKey].append((avatarEntity, context))
 				
-			DEBUG_MSG("Spaces::loginToSpace: avatarEntity=%s add pending." % avatarEntity.id)
+			logger.debug("Spaces::loginToSpace: avatarEntity=%s add pending." % avatarEntity.id)
 			return
 		
-		DEBUG_MSG("Spaces::loginToSpace: avatarEntity=%s" % avatarEntity.id)
+		logger.debug("Spaces::loginToSpace: avatarEntity=%s" % avatarEntity.id)
 		space.loginToSpace(avatarEntity, context)
 
 	def teleportSpace(self, entityCall, position, direction, context):
@@ -110,7 +112,7 @@ class SpaceAlloc:
 		"""
 		space = self.alloc(context)
 		if space is None:
-			ERROR_MSG("Spaces::teleportSpace: not found space %i. login to space is failed!" % self._utype)
+			logger.error("Spaces::teleportSpace: not found space %i. login to space is failed!" % self._utype)
 			return
 		
 		if space == CONST_WAIT_CREATE:
@@ -120,10 +122,10 @@ class SpaceAlloc:
 			else:
 				self._pendingEnterEntityMBs[spaceKey].append((entityCall, position, direction, context))
 
-			DEBUG_MSG("Spaces::teleportSpace: avatarEntity=%s add pending." % entityCall.id)
+			logger.debug("Spaces::teleportSpace: avatarEntity=%s add pending." % entityCall.id)
 			return
 			
-		DEBUG_MSG("Spaces::teleportSpace: entityCall=%s" % entityCall)
+		logger.debug("Spaces::teleportSpace: entityCall=%s" % entityCall)
 		space.teleportSpace(entityCall, position, direction, context)
 		
 class SpaceAllocDuplicate(SpaceAlloc):

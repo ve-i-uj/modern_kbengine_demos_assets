@@ -2,7 +2,9 @@
 import KBEngine
 import skills
 import GlobalConst
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 class SkillBox:
 	def __init__(self):

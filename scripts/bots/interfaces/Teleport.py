@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import KBEngine
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 class Teleport:
 	def __init__(self):

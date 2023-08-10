@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.baseapp import KBEngine
 import GlobalConst
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 from skillbases.SObject import SObject
 
 class SkillInitiative(SObject):

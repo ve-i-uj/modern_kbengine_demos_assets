@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import KBEngine
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 class Dialog:
 	def __init__(self):
@@ -10,20 +12,20 @@ class Dialog:
 		"""
 		defined method.
 		"""
-		DEBUG_MSG("Dialog:dialog_addOption::dialogType=%i, dialogKey=%i, title=%s, extra=%s" % \
+		logger.debug("Dialog:dialog_addOption::dialogType=%i, dialogKey=%i, title=%s, extra=%s" % \
 				(dialogType, dialogKey, title, extra))
 
 	def dialog_setText(self, body, isPlayer, headID, sayname):
 		"""
 		defined method.
 		"""
-		DEBUG_MSG("Dialog:dialog_setText::body=%s, isPlayer=%i, headID=%i, sayname=%s" % \
+		logger.debug("Dialog:dialog_setText::body=%s, isPlayer=%i, headID=%i, sayname=%s" % \
 				(body, isPlayer, headID, sayname))
 	
 	def dialog_close(self):
 		"""
 		defined method.
 		"""
-		DEBUG_MSG("Dialog:dialog_close:: %i" % (self.id))
+		logger.debug("Dialog:dialog_close:: %i" % (self.id))
 				
 

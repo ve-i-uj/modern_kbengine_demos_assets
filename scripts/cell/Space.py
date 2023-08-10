@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import KBEngine
-from KBEDebug import *
+from assetsapi.kbeapi.cellapp import KBEngine
+import logging
+
+logger = logging.getLogger()
 from interfaces.GameObject import GameObject
 
 import d_spaces
@@ -19,7 +21,7 @@ class Space(KBEngine.Entity, GameObject):
 		#KBEngine.addSpaceGeometryMapping(self.spaceID, None, resPath, True, {0 : "srv_xinshoucun_1.navmesh", 1 : "srv_xinshoucun.navmesh"})
 		KBEngine.addSpaceGeometryMapping(self.spaceID, None, resPath)
 		
-		DEBUG_MSG('created space[%d] entityID = %i, res = %s.' % (self.spaceUType, self.id, resPath))
+		logger.debug('created space[%d] entityID = %i, res = %s.' % (self.spaceUType, self.id, resPath))
 		
 		KBEngine.globalData["space_%i" % self.spaceID] = self.base
 	
@@ -38,13 +40,13 @@ class Space(KBEngine.Entity, GameObject):
 		defined method.
 		进入场景
 		"""
-		DEBUG_MSG('Space::onEnter space[%d] entityID = %i.' % (self.spaceUType, entityCall.id))
+		logger.debug('Space::onEnter space[%d] entityID = %i.' % (self.spaceUType, entityCall.id))
 		
 	def onLeave(self, entityID):
 		"""
 		defined method.
 		离开场景
 		"""
-		DEBUG_MSG('Space::onLeave space[%d] entityID = %i.' % (self.spaceUType, entityID))
+		logger.debug('Space::onLeave space[%d] entityID = %i.' % (self.spaceUType, entityID))
 		
 

@@ -4,7 +4,9 @@
 """
 
 import GlobalDefine
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 
 class State:
 	"""
@@ -49,13 +51,13 @@ class State:
 	# property method
 	# ----------------------------------------------------------------
 	def set_state(self, oldValue):
-		DEBUG_MSG("%s::set_state: %i changed:%s->%s" % (self.getScriptName(), self.id, oldValue, self.state))
+		logger.debug("%s::set_state: %i changed:%s->%s" % (self.getScriptName(), self.id, oldValue, self.state))
 		self.onStateChanged_(oldValue, self.state)
 
 	def set_effStates(self, oldValue):
-		DEBUG_MSG("%s::set_effStates: %i changed:%s->%s" % (self.getScriptName(), self.id, oldValue, self.effStates))
+		logger.debug("%s::set_effStates: %i changed:%s->%s" % (self.getScriptName(), self.id, oldValue, self.effStates))
 		self.onEffectStateChanged_(oldValue, self.effStates)
 
 	def set_forbids(self, oldValue):
-		DEBUG_MSG("%s::set_forbids: %i changed:%s->%s" % (self.getScriptName(), self.id, oldValue, self.forbids))
+		logger.debug("%s::set_forbids: %i changed:%s->%s" % (self.getScriptName(), self.id, oldValue, self.forbids))
 		self.onForbidChanged_(oldValue, self.forbids)

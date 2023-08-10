@@ -4,7 +4,9 @@
 """
 
 import GlobalDefine
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 
 class Flags:
 	"""

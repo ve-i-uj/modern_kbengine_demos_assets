@@ -1,17 +1,16 @@
 <root>
 	<!--
-		实体注册文件(<你的资产库>/scripts/entities.xml)
-		详细说明请参考：http://kbengine.org/cn/docs/configuration/entities.html
-					http://www.kbengine.org/cn/docs/programming/entitydef.html
+	Entity registration file (<your asset library>/scripts/entities.xml).
 	-->
-	
-	<Account hasClient="true"></Account>
-	<Avatar hasClient="true"></Avatar> <!-- <Avatar hasCell="true" hasBase="true" hasClient="true"></Avatar> -->
-	<Monster hasClient="true"></Monster>
-	<NPC hasClient="true"></NPC>
-	<Gate hasClient="true"></Gate>
-	<Spaces/>
-	<Space/>
-	<SpaceDuplicate/>
-	<SpawnPoint/>	
+
+    <Account hasBase="true" hasCell="false" hasClient="true"></Account>
+    <Avatar hasBase="true" hasCell="true" hasClient="true"></Avatar>
+    <Monster hasBase="true" hasCell="true" hasClient="true"></Monster>
+    <NPC hasBase="true" hasCell="true" hasClient="true"></NPC>
+    <Gate hasBase="true" hasCell="true" hasClient="true"></Gate>
+    <Spaces hasBase="true" hasCell="true" hasClient="false"></Spaces>
+    <Space hasBase="true" hasCell="true" hasClient="false"></Space>
+    <SpaceDuplicate hasBase="true" hasCell="true" hasClient="false"></SpaceDuplicate>
+    <SpawnPoint hasBase="true" hasCell="true" hasClient="false"></SpawnPoint>
+
 </root>

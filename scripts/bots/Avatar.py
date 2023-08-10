@@ -6,7 +6,9 @@ import Math
 import time
 import d_spaces
 import GlobalDefine
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 from interfaces.GameObject import GameObject
 from interfaces.Dialog import Dialog
 from interfaces.Teleport import Teleport
@@ -44,24 +46,24 @@ class Avatar(KBEngine.Entity,
 		KBEngine method.
 		这个entity进入了一个新的space
 		"""
-		DEBUG_MSG("%s::onEnterSpace: %i" % (self.__class__.__name__, self.id))
+		logger.debug("%s::onEnterSpace: %i" % (self.__class__.__name__, self.id))
 
 	def onLeaveSpace(self):
 		"""
 		KBEngine method.
 		这个entity将要离开当前space
 		"""
-		DEBUG_MSG("%s::onLeaveSpace: %i" % (self.__class__.__name__, self.id))
+		logger.debug("%s::onLeaveSpace: %i" % (self.__class__.__name__, self.id))
 		
 	def onBecomePlayer( self ):
 		"""
 		KBEngine method.
 		当这个entity被引擎定义为角色时被调用
 		"""
-		DEBUG_MSG("%s::onBecomePlayer: %i" % (self.__class__.__name__, self.id))
+		logger.debug("%s::onBecomePlayer: %i" % (self.__class__.__name__, self.id))
 
 	def onBecomeNonPlayer(self):
-		DEBUG_MSG("%s::onBecomeNonPlayer: %i" % (self.__class__.__name__, self.id))
+		logger.debug("%s::onBecomeNonPlayer: %i" % (self.__class__.__name__, self.id))
 		
 	def onJump(self):
 		"""
@@ -89,7 +91,7 @@ class PlayerAvatar(Avatar):
 		KBEngine method.
 		当这个entity被引擎定义为角色时被调用
 		"""
-		DEBUG_MSG("%s::onBecomePlayer: %i" % (self.__class__.__name__, self.id))
+		logger.debug("%s::onBecomePlayer: %i" % (self.__class__.__name__, self.id))
 		
 		# 注意：由于PlayerAvatar是引擎底层强制由Avatar转换过来，__init__并不会再调用
 		# 这里手动进行初始化一下
@@ -105,7 +107,7 @@ class PlayerAvatar(Avatar):
 		KBEngine method.
 		这个entity进入了一个新的space
 		"""
-		DEBUG_MSG("%s::onEnterSpace: %i" % (self.__class__.__name__, self.id))
+		logger.debug("%s::onEnterSpace: %i" % (self.__class__.__name__, self.id))
 		
 		# 注意：由于PlayerAvatar是引擎底层强制由Avatar转换过来，__init__并不会再调用
 		# 这里手动进行初始化一下
@@ -116,7 +118,7 @@ class PlayerAvatar(Avatar):
 		KBEngine method.
 		这个entity将要离开当前space
 		"""
-		DEBUG_MSG("%s::onLeaveSpace: %i" % (self.__class__.__name__, self.id))
+		logger.debug("%s::onLeaveSpace: %i" % (self.__class__.__name__, self.id))
 
 	def calcRandomWalkPosition( self ):
 		"""
@@ -189,7 +191,7 @@ class PlayerAvatar(Avatar):
 			self.testType = random.randint(0, 2)
 				
 	def update(self):
-		#DEBUG_MSG("%s::update: %i" % (self.__class__.__name__, self.id))
+		#logger.debug("%s::update: %i" % (self.__class__.__name__, self.id))
 		if self.isDestroyed:
 			return
 

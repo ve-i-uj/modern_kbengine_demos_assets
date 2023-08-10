@@ -2,9 +2,11 @@
 import random
 import math
 import time
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import SCDefine
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 from interfaces.Combat import Combat
 from interfaces.Spell import Spell
 from interfaces.Motion import Motion
@@ -63,7 +65,7 @@ class Monster(KBEngine.Entity,
 		KBEngine method.
 		引擎回调timer触发
 		"""
-		#DEBUG_MSG("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
+		#logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
 		NPCObject.onTimer(self, tid, userArg)
 		Spell.onTimer(self, tid, userArg)
 		AI.onTimer(self, tid, userArg)

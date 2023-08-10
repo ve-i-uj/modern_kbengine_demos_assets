@@ -2,4 +2,6 @@
 #
 """
 """
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()

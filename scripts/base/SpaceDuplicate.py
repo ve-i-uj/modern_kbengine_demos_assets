@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.baseapp import KBEngine
 import random
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 from Space import Space
 import d_entities
 import d_spaces

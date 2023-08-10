@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import KBEngine
-from KBEDebug import *
+from assetsapi.kbeapi.baseapp import KBEngine
+import logging
+
+logger = logging.getLogger()
 
 class GameObject:
 	"""
@@ -38,7 +40,7 @@ class GameObject:
 		KBEngine method.
 		引擎回调timer触发
 		"""
-		#DEBUG_MSG("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
+		#logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
 		if self.isDestroyed:
 			self.delTimer(tid)
 			return
@@ -48,7 +50,7 @@ class GameObject:
 		KBEngine method.
 		entity的cell部分实体被创建成功
 		"""
-		#DEBUG_MSG("%s::onGetCell: %i" % (self.getScriptName(), self.id))
+		#logger.debug("%s::onGetCell: %i" % (self.getScriptName(), self.id))
 		pass
 		
 	def onLoseCell(self):
@@ -56,7 +58,7 @@ class GameObject:
 		KBEngine method.
 		entity的cell部分实体丢失
 		"""
-		DEBUG_MSG("%s::onLoseCell: %i" % (self.getScriptName(), self.id))
+		logger.debug("%s::onLoseCell: %i" % (self.getScriptName(), self.id))
 		self.destroySelf()
 
 	def onRestore(self):
@@ -64,6 +66,6 @@ class GameObject:
 		KBEngine method.
 		entity的cell部分实体被恢复成功
 		"""
-		DEBUG_MSG("%s::onRestore: %s" % (self.getScriptName(), self.cell))
+		logger.debug("%s::onRestore: %s" % (self.getScriptName(), self.cell))
 		
 

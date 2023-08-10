@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import random
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger()
 from skillbases.SObject import SObject
 
 class SkillPassivity(SObject):

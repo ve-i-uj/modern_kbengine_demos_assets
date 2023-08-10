@@ -2,13 +2,15 @@
 #
 """
 """
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import copy
 import scdefine
 import scutils
 import skills
 import ScriptMaps
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 from Item import Item
 from Equip import Equip
 from Weapon import Weapon
@@ -42,7 +44,7 @@ def createItem(itemNO, amount = 1, owner = None):
 	"""
 	创建物品
 	"""
-	INFO_MSG("%i created. amount=%i" % (itemNO, amount))
+	logger.info("%i created. amount=%i" % (itemNO, amount))
 
 	stackMax = getItemData(itemNO).get("overlayMax", 1)
 	itemList = []
@@ -62,5 +64,5 @@ def createItemByItem(item, amount, owner = None):
 	newItem = copy.deepcopy(item)
 	newItem.setUUID(scutils.newUID())
 	newItem.setAmount(amount)
-	INFO_MSG("new item created. new item uuid=%i, src item uuid=%i" % (newItem.getUUID(), item.getUUID()))
+	logger.info("new item created. new item uuid=%i, src item uuid=%i" % (newItem.getUUID(), item.getUUID()))
 	return newItem

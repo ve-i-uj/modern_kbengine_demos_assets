@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import KBEngine
-from KBEDebug import *
+from assetsapi.kbeapi.cellapp import KBEngine
+import logging
+
+logger = logging.getLogger()
 
 class TestNoBase(KBEngine.EntityComponent):
 	def __init__(self):
@@ -9,13 +11,13 @@ class TestNoBase(KBEngine.EntityComponent):
 	def onAttached(self, owner):
 		"""
 		"""
-		INFO_MSG("TestNoBase::onAttached(): owner=%i" % (owner.id))
+		logger.info("TestNoBase::onAttached(): owner=%i" % (owner.id))
 		self.owner.client.component3.helloCB(888)
 
 	def onDetached(self, owner):
 		"""
 		"""
-		INFO_MSG("TestNoBase::onDetached(): owner=%i" % (owner.id))
+		logger.info("TestNoBase::onDetached(): owner=%i" % (owner.id))
 
 	def hello(self, x, iii):
 		print("+++++++++++++++++++++++TestNoBase hello", x, iii)

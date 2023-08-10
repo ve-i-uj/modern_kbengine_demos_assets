@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import KBEngine
-from KBEDebug import *
+from assetsapi.kbeapi.cellapp import KBEngine
+import logging
+
+logger = logging.getLogger()
 
 class Test(KBEngine.EntityComponent):
 	def __init__(self):
@@ -9,13 +11,13 @@ class Test(KBEngine.EntityComponent):
 	def onAttached(self, owner):
 		"""
 		"""
-		INFO_MSG("Test::onAttached(): owner=%i" % (owner.id))
+		logger.info("Test::onAttached(): owner=%i" % (owner.id))
 		self.owner.client.component1.helloCB(111)
 
 	def onDetached(self, owner):
 		"""
 		"""
-		INFO_MSG("Test::onDetached(): owner=%i" % (owner.id))
+		logger.info("Test::onDetached(): owner=%i" % (owner.id))
 
 	def hello(self, x, iii):
 		print("+++++++++++++++++++++++hello", x, iii)

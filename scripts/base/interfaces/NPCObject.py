@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import KBEngine
-from KBEDebug import *
+from assetsapi.kbeapi.baseapp import KBEngine
+import logging
+
+logger = logging.getLogger()
 from interfaces.GameObject import GameObject
 
 class NPCObject(GameObject):

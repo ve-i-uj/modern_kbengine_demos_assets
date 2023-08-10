@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import KBEngine
-from KBEDebug import * 
+from assetsapi.kbeapi.cellapp import KBEngine
+import logging
+
+logger = logging.getLogger() 
 import dialogmgr
 
 class Dialog:
@@ -22,7 +24,7 @@ class Dialog:
 			return
 			
 		if not KBEngine.entities.has_key(targetID):
-			DEBUG_MSG("Dialog::dialog: %i not found targetID:%i" % (self.id, dialogID))
+			logger.debug("Dialog::dialog: %i not found targetID:%i" % (self.id, dialogID))
 			return
 			
 		dialogmgr.onGossip(dialogID, self, KBEngine.entities[targetID])

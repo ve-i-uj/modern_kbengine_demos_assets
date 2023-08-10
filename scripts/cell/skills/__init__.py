@@ -2,7 +2,9 @@
 #
 """
 """
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 import d_skills
 
 from skills.SkillAttack import SkillAttack

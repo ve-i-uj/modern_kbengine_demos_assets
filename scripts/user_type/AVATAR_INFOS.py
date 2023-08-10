@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import logging
 from typing import List
+
 from typing_extensions import TypedDict
 
-from KBEDebug import *
-
 from assetsapi.user_type import AvatarInfosFD
+
+logger = logging.getLogger()
 
 
 # Нельзя использовать `from assetsapi.user_type import AvatarInfosListFD`, т.к.

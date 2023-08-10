@@ -2,7 +2,9 @@
 #
 """
 """
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 
 def onInit():
 	"""

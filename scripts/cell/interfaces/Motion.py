@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import math
 import Math
 import time
 import random
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 class Motion:
 	"""
@@ -18,7 +20,7 @@ class Motion:
 		停止移动
 		"""
 		if self.isMoving:
-			#INFO_MSG("%i stop motion." % self.id)
+			#logger.info("%i stop motion." % self.id)
 			self.cancelController("Movement")
 			self.isMoving = False
 
@@ -70,7 +72,7 @@ class Motion:
 		"""
 		virtual method.
 		"""
-		INFO_MSG("%s::backSpawnPos: %i, pos=%s, speed=%f." % \
+		logger.info("%s::backSpawnPos: %i, pos=%s, speed=%f." % \
 			(self.getScriptName(), self.id, self.spawnPos, self.moveSpeed * 0.1))
 		
 		self.resetSpeed()
@@ -86,7 +88,7 @@ class Motion:
 		
 		entity = KBEngine.entities.get(targetID)
 		if entity is None:
-			DEBUG_MSG("%s::gotoEntity: not found targetID=%i" % (targetID))
+			logger.debug("%s::gotoEntity: not found targetID=%i" % (targetID))
 			return
 			
 		if entity.position.distTo(self.position) <= dist:
@@ -147,7 +149,7 @@ class Motion:
 		KBEngine method.
 		使用引擎的任何移动相关接口， 在entity一次移动完成时均会调用此接口
 		"""
-		#DEBUG_MSG("%s::onMove: %i controllerId =%i, userarg=%s" % \
+		#logger.debug("%s::onMove: %i controllerId =%i, userarg=%s" % \
 		#				(self.getScriptName(), self.id, controllerId, userarg))
 		self.isMoving = True
 		
@@ -156,7 +158,7 @@ class Motion:
 		KBEngine method.
 		使用引擎的任何移动相关接口， 在entity一次移动完成时均会调用此接口
 		"""
-		DEBUG_MSG("%s::onMoveFailure: %i controllerId =%i, userarg=%s" % \
+		logger.debug("%s::onMoveFailure: %i controllerId =%i, userarg=%s" % \
 						(self.getScriptName(), self.id, controllerId, userarg))
 		
 		self.isMoving = False

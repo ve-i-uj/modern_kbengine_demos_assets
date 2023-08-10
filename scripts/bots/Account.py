@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 import KBEngine
 import copy
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 
 class Account(KBEngine.Entity):
 	def __init__(self):
 		KBEngine.Entity.__init__(self)
-		DEBUG_MSG("Account::__init__:%s." % (self.__dict__))
+		logger.debug("Account::__init__:%s." % (self.__dict__))
 		self.base.reqAvatarList()
 		
 	def onReqAvatarList(self, infos):
@@ -14,7 +16,7 @@ class Account(KBEngine.Entity):
 		defined method.
 		"""
 		
-		DEBUG_MSG("Account:onReqAvatarList::%s" % (list(infos['values'])))
+		logger.debug("Account:onReqAvatarList::%s" % (list(infos['values'])))
 		self.base.reqCreateAvatar(1, "kbe_bot_%s" % self.id)
 		self.characters = copy.deepcopy(infos["values"])
 
@@ -22,7 +24,7 @@ class Account(KBEngine.Entity):
 		"""
 		defined method.
 		"""
-		DEBUG_MSG("Account:onCreateAvatarResult::%s, retcode=%i" % (dict(info), retcode))
+		logger.debug("Account:onCreateAvatarResult::%s, retcode=%i" % (dict(info), retcode))
 		
 		if retcode == 0:
 			self.base.selectAvatarGame(info["dbid"])
@@ -36,4 +38,4 @@ class Account(KBEngine.Entity):
 		"""
 		defined method.
 		"""
-		DEBUG_MSG("Account:onRemoveAvatar:: dbid=%i" % (dbid))
+		logger.debug("Account:onRemoveAvatar:: dbid=%i" % (dbid))

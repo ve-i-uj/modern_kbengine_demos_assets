@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import SCDefine
 import time
 import random
 import GlobalDefine
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 from skillbases.SCObject import SCObject
 
 import d_entities
@@ -28,7 +30,7 @@ class AI:
 		"""
 		ret = self.position.distTo(self.spawnPos) <= __TERRITORY_AREA__
 		if not ret:
-			INFO_MSG("%s::checkInTerritory: %i is False." % (self.getScriptName(), self.id))
+			logger.info("%s::checkInTerritory: %i is False." % (self.getScriptName(), self.id))
 			
 		return ret
 
@@ -42,9 +44,9 @@ class AI:
 		self.territoryControllerID = self.addProximity(trange, 0, 0)
 		
 		if self.territoryControllerID <= 0:
-			ERROR_MSG("%s::addTerritory: %i, range=%i, is error!" % (self.getScriptName(), self.id, trange))
+			logger.error("%s::addTerritory: %i, range=%i, is error!" % (self.getScriptName(), self.id, trange))
 		else:
-			INFO_MSG("%s::addTerritory: %i range=%i, id=%i." % (self.getScriptName(), self.id, trange, self.territoryControllerID))
+			logger.info("%s::addTerritory: %i range=%i, id=%i." % (self.getScriptName(), self.id, trange, self.territoryControllerID))
 			
 	def delTerritory(self):
 		"""
@@ -53,7 +55,7 @@ class AI:
 		if self.territoryControllerID > 0:
 			self.cancelController(self.territoryControllerID)
 			self.territoryControllerID = 0
-			INFO_MSG("%s::delTerritory: %i" % (self.getScriptName(), self.id))
+			logger.info("%s::delTerritory: %i" % (self.getScriptName(), self.id))
 			
 	def enable(self):
 		"""
@@ -123,7 +125,7 @@ class AI:
 		可以在适当的时候激活或者停止这个entity的任意行为。
 		@param isWitnessed	: 为false时， entity脱离了任何观察者的观察
 		"""
-		INFO_MSG("%s::onWitnessed: %i isWitnessed=%i." % (self.getScriptName(), self.id, isWitnessed))
+		logger.info("%s::onWitnessed: %i isWitnessed=%i." % (self.getScriptName(), self.id, isWitnessed))
 		
 		if isWitnessed:
 			self.enable()
@@ -204,7 +206,7 @@ class AI:
 		virtual method.
 		子状态改变了
 		"""
-		#INFO_MSG("%i oldSubstate=%i to newSubstate=%i" % (self.id, oldSubState, newSubState))
+		#logger.info("%i oldSubstate=%i to newSubstate=%i" % (self.id, oldSubState, newSubState))
 		pass
 
 	def onFlagsChanged_(self, flags, isInc):
@@ -227,7 +229,7 @@ class AI:
 		if not self.isState(GlobalDefine.ENTITY_STATE_FREE):
 			return
 			
-		DEBUG_MSG("%s::onEnterTrap: %i entityEntering=(%s)%i, range_xz=%s, range_y=%s, controllerID=%i, userarg=%i" % \
+		logger.debug("%s::onEnterTrap: %i entityEntering=(%s)%i, range_xz=%s, range_y=%s, controllerID=%i, userarg=%i" % \
 						(self.getScriptName(), self.id, entityEntering.getScriptName(), entityEntering.id, \
 						range_xz, range_y, controllerID, userarg))
 		
@@ -244,7 +246,7 @@ class AI:
 		if entityLeaving.isDestroyed or entityLeaving.getScriptName() != "Avatar" or entityLeaving.isDead():
 			return
 			
-		INFO_MSG("%s::onLeaveTrap: %i entityLeaving=(%s)%i." % (self.getScriptName(), self.id, \
+		logger.info("%s::onLeaveTrap: %i entityLeaving=(%s)%i." % (self.getScriptName(), self.id, \
 				entityLeaving.getScriptName(), entityLeaving.id))
 
 	def onAddEnemy(self, entityID):
@@ -270,7 +272,7 @@ class AI:
 		"""
 		敌人丢失
 		"""
-		INFO_MSG("%s::onLoseTarget: %i target=%i, enemyLogSize=%i." % (self.getScriptName(), self.id, \
+		logger.info("%s::onLoseTarget: %i target=%i, enemyLogSize=%i." % (self.getScriptName(), self.id, \
 				self.targetID, len(self.enemyLog)))
 				
 		self.targetID = 0
@@ -283,7 +285,7 @@ class AI:
 		virtual method.
 		敌人列表空了
 		"""
-		INFO_MSG("%s::onEnemyEmpty: %i" % (self.getScriptName(), self.id))
+		logger.info("%s::onEnemyEmpty: %i" % (self.getScriptName(), self.id))
 
 		if not self.isState(GlobalDefine.ENTITY_STATE_FREE):
 			self.changeState(GlobalDefine.ENTITY_STATE_FREE)
@@ -295,6 +297,6 @@ class AI:
 		KBEngine method.
 		引擎回调timer触发
 		"""
-		#DEBUG_MSG("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
+		#logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
 		if SCDefine.TIMER_TYPE_HEARDBEAT == userArg:
 			self.onHeardTimer()

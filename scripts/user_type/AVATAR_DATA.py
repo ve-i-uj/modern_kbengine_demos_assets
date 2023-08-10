@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 
 from assetsapi.user_type import AvatarDataFD
 

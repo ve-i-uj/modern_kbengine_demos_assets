@@ -2,8 +2,10 @@
 import random
 import math
 import time
-import KBEngine
-from KBEDebug import *
+from assetsapi.kbeapi.cellapp import KBEngine
+import logging
+
+logger = logging.getLogger()
 from interfaces.NPCObject import NPCObject
 from interfaces.Motion import Motion
 
@@ -27,7 +29,7 @@ class NPC(KBEngine.Entity, NPCObject, Motion):
 		KBEngine method.
 		引擎回调timer触发
 		"""
-		#DEBUG_MSG("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
+		#logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
 		NPCObject.onTimer(self, tid, userArg)
 		
 	def onDestroy(self):

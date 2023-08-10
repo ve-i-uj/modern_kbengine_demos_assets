@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import KBEngine
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 from skills.base.SkillInitiative import SkillInitiative
 
 class SkillAttack(SkillInitiative):

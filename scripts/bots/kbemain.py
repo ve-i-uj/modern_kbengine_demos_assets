@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import KBEngine
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 
 def onInit(isReload):
 	"""
@@ -9,7 +11,7 @@ def onInit(isReload):
 	@param isReload: 是否是被重写加载脚本后触发的
 	@type isReload: bool
 	"""
-	DEBUG_MSG('onInit::isReload:%s' % isReload)
+	logger.debug('onInit::isReload:%s' % isReload)
 	
 def onFinish():
 	"""

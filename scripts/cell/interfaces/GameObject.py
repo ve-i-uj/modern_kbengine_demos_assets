@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import d_spaces
 import SCDefine
 import GlobalDefine
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 import d_entities
 import d_avatar_inittab
@@ -75,7 +77,7 @@ class GameObject:
 		"""
 		if self.isState(GlobalDefine.ENTITY_STATE_DEAD):
 			self.addTimer(5, 0, SCDefine.TIMER_TYPE_DESTROY)
-			DEBUG_MSG("%s::startDestroyTimer: %i running." % (self.getScriptName(), self.id))
+			logger.debug("%s::startDestroyTimer: %i running." % (self.getScriptName(), self.id))
 	
 	#--------------------------------------------------------------------------------------------
 	#                              Callbacks
@@ -85,7 +87,7 @@ class GameObject:
 		KBEngine method.
 		引擎回调timer触发
 		"""
-		#DEBUG_MSG("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
+		#logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
 		if SCDefine.TIMER_TYPE_DESTROY == userArg:
 			self.onDestroyEntityTimer()
 			
@@ -104,7 +106,7 @@ class GameObject:
 		可以在适当的时候激活或者停止这个entity的任意行为。
 		@param isWitnessed	: 为false时， entity脱离了任何观察者的观察
 		"""
-		DEBUG_MSG("%s::onWitnessed: %i isWitnessed=%i." % (self.getScriptName(), self.id, isWitnessed))
+		logger.debug("%s::onWitnessed: %i isWitnessed=%i." % (self.getScriptName(), self.id, isWitnessed))
 		
 	def onEnterTrap(self, entityEntering, range_xz, range_y, controllerID, userarg):
 		"""
@@ -112,7 +114,7 @@ class GameObject:
 		引擎回调进入陷阱触发
 		"""
 		if entityEntering.getScriptName() == "Avatar":
-			DEBUG_MSG("%s::onEnterTrap: %i entityEntering=%i, range_xz=%s, range_y=%s, controllerID=%i, userarg=%i" % \
+			logger.debug("%s::onEnterTrap: %i entityEntering=%i, range_xz=%s, range_y=%s, controllerID=%i, userarg=%i" % \
 							(self.getScriptName(), self.id, entityEntering.id, range_xz, range_y, controllerID, userarg))
 
 	def onLeaveTrap(self, entityLeaving, range_xz, range_y, controllerID, userarg):
@@ -121,7 +123,7 @@ class GameObject:
 		引擎回调离开陷阱触发
 		"""
 		if entityLeaving.getScriptName() == "Avatar":
-			DEBUG_MSG("%s::onLeaveTrap: %i entityLeaving=%i, range_xz=%s, range_y=%s, controllerID=%i, userarg=%i" % \
+			logger.debug("%s::onLeaveTrap: %i entityLeaving=%i, range_xz=%s, range_y=%s, controllerID=%i, userarg=%i" % \
 							(self.getScriptName(), self.id, entityLeaving.id, range_xz, range_y, controllerID, userarg))
 
 	def onRestore(self):
@@ -129,7 +131,7 @@ class GameObject:
 		KBEngine method.
 		entity的cell部分实体被恢复成功
 		"""
-		DEBUG_MSG("%s::onRestore: %s" % (self.getScriptName(), self.base))
+		logger.debug("%s::onRestore: %s" % (self.getScriptName(), self.base))
 
 	def onDestroyEntityTimer(self):
 		"""

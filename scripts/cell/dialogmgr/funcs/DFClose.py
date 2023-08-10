@@ -2,7 +2,9 @@
 #
 """
 """
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 from dialogmgr.funcs.iDFunction import iDFunction
 
 class DFClose(iDFunction):

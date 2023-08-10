@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.baseapp import KBEngine
 import GlobalConst
 import d_spaces
 import d_avatar_inittab
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 class Teleport:
 	def __init__(self):

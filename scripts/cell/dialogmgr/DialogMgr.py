@@ -2,7 +2,9 @@
 #
 """
 """
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 from dialogmgr.Dialog import Dialog
 from d_dialogs import datas as g_dialogDatas
 

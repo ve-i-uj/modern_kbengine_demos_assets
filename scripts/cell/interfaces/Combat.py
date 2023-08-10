@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import GlobalDefine
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 from interfaces.CombatPropertys import CombatPropertys
 
 class Combat(CombatPropertys):
@@ -45,7 +47,7 @@ class Combat(CombatPropertys):
 		if killerID == self.id:
 			killerID = 0
 			
-		INFO_MSG("%s::die: %i i die. killerID:%i." % (self.getScriptName(), self.id, killerID))
+		logger.info("%s::die: %i i die. killerID:%i." % (self.getScriptName(), self.id, killerID))
 		killer = KBEngine.entities.get(killerID)
 		if killer:
 			killer.onKiller(self.id)
@@ -71,7 +73,7 @@ class Combat(CombatPropertys):
 		
 		self.addEnemy(attackerID, damage)
 
-		DEBUG_MSG("%s::recvDamage: %i attackerID=%i, skillID=%i, damageType=%i, damage=%i" % \
+		logger.debug("%s::recvDamage: %i attackerID=%i, skillID=%i, damageType=%i, damage=%i" % \
 			(self.getScriptName(), self.id, attackerID, skillID, damageType, damage))
 			
 		if self.HP <= damage:
@@ -90,7 +92,7 @@ class Combat(CombatPropertys):
 		if entityID in self.enemyLog:
 			return
 
-		DEBUG_MSG("%s::addEnemy: %i entity=%i, enmity=%i" % \
+		logger.debug("%s::addEnemy: %i entity=%i, enmity=%i" % \
 						(self.getScriptName(), self.id, entityID, enmity))
 		
 		self.enemyLog.append(entityID)
@@ -101,7 +103,7 @@ class Combat(CombatPropertys):
 		defined.
 		删除敌人
 		"""
-		DEBUG_MSG("%s::removeEnemy: %i entity=%i" % \
+		logger.debug("%s::removeEnemy: %i entity=%i" % \
 						(self.getScriptName(), self.id, entityID))
 		
 		self.enemyLog.remove(entityID)
@@ -124,7 +126,7 @@ class Combat(CombatPropertys):
 		"""
 		dist = entity.position.distTo(self.position)
 		if dist > 30.0:
-			INFO_MSG("%s::checkEnemyDist: %i id=%i, dist=%f." % (self.getScriptName(), self.id, entity.id, dist))
+			logger.info("%s::checkEnemyDist: %i id=%i, dist=%f." % (self.getScriptName(), self.id, entity.id, dist))
 			return False
 		
 		return True

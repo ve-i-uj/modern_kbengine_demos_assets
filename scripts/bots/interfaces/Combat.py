@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import KBEngine
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 class Combat:
 	def __init__(self):
@@ -10,7 +12,7 @@ class Combat:
 		"""
 		defined.
 		"""
-		DEBUG_MSG("%s::recvDamage: %i attackerID=%i, skillID=%i, damageType=%i, damage=%i" % \
+		logger.debug("%s::recvDamage: %i attackerID=%i, skillID=%i, damageType=%i, damage=%i" % \
 			(self.getScriptName(), self.id, attackerID, skillID, damageType, damage))
 		
 		

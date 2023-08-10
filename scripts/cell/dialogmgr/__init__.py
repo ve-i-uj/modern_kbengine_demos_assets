@@ -2,7 +2,9 @@
 #
 """
 """
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 from dialogmgr.Dialog import Dialog
 from dialogmgr.DialogMgr import DialogMgr
 import d_entities
@@ -16,7 +18,7 @@ def onInit():
 	g_dialogMgr.onInit()
 				
 def onGossip(key, avatar, talker):
-	INFO_MSG("onGossip: avatar:%i, talker=%i, key:%s." % (avatar.id, talker.id, key))
+	logger.info("onGossip: avatar:%i, talker=%i, key:%s." % (avatar.id, talker.id, key))
 	
 	if d_entities.datas.get(talker.uid, None) is None:
 		return

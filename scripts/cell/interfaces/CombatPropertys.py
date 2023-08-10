@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import GlobalDefine
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 class CombatPropertys:
 	"""

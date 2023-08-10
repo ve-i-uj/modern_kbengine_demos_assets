@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import KBEngine
-from KBEDebug import *
+from assetsapi.kbeapi.baseapp import KBEngine
+import logging
+
+logger = logging.getLogger()
 
 class Test(KBEngine.EntityComponent):
 	def __init__(self):
@@ -13,12 +15,12 @@ class Test(KBEngine.EntityComponent):
 	def onAttached(self, owner):
 		"""
 		"""
-		INFO_MSG("Test::onAttached(): owner=%i" % (owner.id))
-		
+		logger.info("Test::onAttached(): owner=%i" % (owner.id))
+
 	def onDetached(self, owner):
 		"""
 		"""
-		INFO_MSG("Test::onDetached(): owner=%i" % (owner.id))
+		logger.info("Test::onDetached(): owner=%i" % (owner.id))
 
 	def say(self, iii):
 		print("+++++++++++++++++++++++say", iii)
@@ -31,7 +33,7 @@ class Test(KBEngine.EntityComponent):
 		该entity被正式激活为可使用， 此时entity已经建立了client对应实体， 可以在此创建它的
 		cell部分。
 		"""
-		INFO_MSG("Test[%i]::onClientEnabled:entities enable." % (self.ownerID))
+		logger.info("Test[%i]::onClientEnabled:entities enable." % (self.ownerID))
 		self.tid = self.addTimer(10, 0, 123)
 
 	def onClientDeath(self):
@@ -39,7 +41,7 @@ class Test(KBEngine.EntityComponent):
 		KBEngine method.
 		客户端对应实体已经销毁
 		"""
-		DEBUG_MSG("Test[%i].onClientDeath:" % self.ownerID)
+		logger.debug("Test[%i].onClientDeath:" % self.ownerID)
 
 		if self.tid > 0:
 			self.delTimer(self.tid)
@@ -49,7 +51,7 @@ class Test(KBEngine.EntityComponent):
 		KBEngine method.
 		引擎回调timer触发
 		"""
-		DEBUG_MSG("%s::onTimer: %i, tid:%i, arg:%i" % (self.name, self.ownerID, tid, userArg))
+		logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.name, self.ownerID, tid, userArg))
 
 		if self.tid == tid:
 			self.tid = 0

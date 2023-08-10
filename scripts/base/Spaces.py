@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.baseapp import KBEngine
 import Functor
 import d_spaces
 import SCDefine
 import Watcher
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 from SpaceAlloc import *
 from interfaces.GameObject import GameObject
 
@@ -83,7 +85,7 @@ class Spaces(KBEngine.Entity, GameObject):
 		KBEngine method.
 		引擎回调timer触发
 		"""
-		#DEBUG_MSG("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
+		#logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
 		if SCDefine.TIMER_TYPE_CREATE_SPACES == userArg:
 			self.createSpaceOnTimer(tid)
 		

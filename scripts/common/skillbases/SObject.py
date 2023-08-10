@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import KBEngine
-from KBEDebug import * 
+import logging
+
+logger = logging.getLogger() 
 
 class SObject:
 	def __init__(self):

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import KBEngine
-from KBEDebug import *
+from assetsapi.kbeapi.cellapp import KBEngine
+import logging
+
+logger = logging.getLogger()
 import d_spaces
 
 class SpaceContext(dict):

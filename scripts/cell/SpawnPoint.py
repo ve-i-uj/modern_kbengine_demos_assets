@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import KBEngine
+from assetsapi.kbeapi.cellapp import KBEngine
 import SCDefine
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 from interfaces.GameObject import GameObject
 import d_entities
 
@@ -14,7 +16,7 @@ class SpawnPoint(KBEngine.Entity, GameObject):
 		datas = d_entities.datas.get(self.spawnEntityNO)
 		
 		if datas is None:
-			ERROR_MSG("SpawnPoint::spawn:%i not found." % self.spawnEntityNO)
+			logger.error("SpawnPoint::spawn:%i not found." % self.spawnEntityNO)
 			return
 			
 		params = {
@@ -39,7 +41,7 @@ class SpawnPoint(KBEngine.Entity, GameObject):
 		KBEngine method.
 		引擎回调timer触发
 		"""
-		#DEBUG_MSG("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
+		#logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
 		if SCDefine.TIMER_TYPE_SPAWN == userArg:
 			self.spawnTimer()
 		
@@ -59,7 +61,7 @@ class SpawnPoint(KBEngine.Entity, GameObject):
 		当前entity马上将要被引擎销毁
 		可以在此做一些销毁前的工作
 		"""
-		DEBUG_MSG("onDestroy(%i)" % self.id)
+		logger.debug("onDestroy(%i)" % self.id)
 	
 	def onEntityDestroyed(self, entityNO):
 		"""

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import KBEngine
-from KBEDebug import * 
+from assetsapi.kbeapi.cellapp import KBEngine
+import logging
+
+logger = logging.getLogger()
 from skillbases.SObject import SObject
 
 class DBuff(SObject):
@@ -9,7 +11,7 @@ class DBuff(SObject):
 
 		self._loopTime = 0		# 周期触发时间
 		self._totalTime = 0		# 持续时间
-		
+
 	def loadFromDict(self, dictDatas):
 		"""
 		virtual method.
@@ -18,7 +20,7 @@ class DBuff(SObject):
 		SObject.loadFromDict(self, dictDatas)
 		self._loopTime = dictDatas.get('looptime', 0)
 		self._totalTime = dictDatas.get('totaltime', 0)
-		
+
 	def onLoopTrigger(self, context):
 		"""
 		virtual method.
@@ -26,7 +28,7 @@ class DBuff(SObject):
 		@param context: buff/debuff上下文
 		"""
 		pass
-		
+
 	def onAttach(self, context):
 		"""
 		virtual method.
@@ -34,7 +36,7 @@ class DBuff(SObject):
 		@param context: buff/debuff上下文
 		"""
 		pass
-		
+
 	def onDetach(self, context):
 		"""
 		virtual method.

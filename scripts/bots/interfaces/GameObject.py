@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import KBEngine
 import KBExtra
-from KBEDebug import *
+import logging
+
+logger = logging.getLogger()
 
 class GameObject:
 	def __init__(self):
@@ -29,18 +31,18 @@ class GameObject:
 		Property method.
 		服务器设置了name属性
 		"""
-		DEBUG_MSG("%s::set_name: %i changed:%s->%s" % (self.getScriptName(), self.id, oldValue, self.name))
+		logger.debug("%s::set_name: %i changed:%s->%s" % (self.getScriptName(), self.id, oldValue, self.name))
 
 	def set_modelNumber(self, oldValue):
 		"""
 		Property method.
 		服务器设置了modelNumber属性
 		"""
-		DEBUG_MSG("%s::set_modelNumber: %i changed:%s->%s" % (self.getScriptName(), self.id, oldValue, self.modelNumber))
+		logger.debug("%s::set_modelNumber: %i changed:%s->%s" % (self.getScriptName(), self.id, oldValue, self.modelNumber))
 		
 	def set_modelScale(self, oldValue):
 		"""
 		Property method.
 		服务器设置了modelNumber属性
 		"""
-		DEBUG_MSG("%s::set_modelScale: %i changed:%s->%s" % (self.getScriptName(), self.id, oldValue, self.modelScale))
+		logger.debug("%s::set_modelScale: %i changed:%s->%s" % (self.getScriptName(), self.id, oldValue, self.modelScale))
