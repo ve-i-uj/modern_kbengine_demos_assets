@@ -27,17 +27,17 @@
 	</Interfaces>
 
   <Components>
-		<component1>			
+		<component1>
 			<Type> 			Test		</Type>
 			<Persistent>	true		</Persistent>
 		</component1>
 
-		<component2>			
+		<component2>
 			<Type> 			Test		</Type>
 			<Persistent>	false		</Persistent>
 		</component2>
 
-		<component3>			
+		<component3>
 			<Type> 			TestNoBase	</Type>
       		<Persistent>	true		</Persistent>
 		</component3>
@@ -56,7 +56,7 @@
 			<Flags>			CELL_PUBLIC_AND_OWN			</Flags>
 			<Persistent>	true		</Persistent>
 		</level>
-		
+
 		<!--
 		<playerName>
 			<Type>			UNICODE		</Type>
@@ -67,16 +67,25 @@
 		</playerName>
 		-->
 
+		<!-- own_val comment -->
 		<own_val>
 			<Type>			UINT16		</Type>
 			<Flags>			OWN_CLIENT	</Flags>
 		</own_val>
+
+		<accountEntity>
+			<Type>			ENTITYCALL				</Type>
+			<Flags>			BASE					</Flags>
+		</accountEntity>
 	</Properties>
 
 	<BaseMethods>
 		<createCell>
 			<Arg>			ENTITYCALL	</Arg>
 		</createCell>
+
+		<destroySelf>
+		</destroySelf>
 	</BaseMethods>
 
 	<CellMethods>
@@ -95,4 +104,3 @@
 		</onJump>
 	</ClientMethods>
 </root>
-

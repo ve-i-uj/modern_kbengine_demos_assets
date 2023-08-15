@@ -1,17 +1,20 @@
 import time
 import logging
+from typing import Optional
 
 import SCDefine
 from interfaces.Teleport import Teleport
 from interfaces.GameObject import GameObject
 
 from assetsapi.kbeapi.baseapp import KBEngine
-from assetsapi.entity.avatar import IBaseAvatarAPI
+from assetsapi.entity.avatar import IBaseAvatar
+from assetsapi.entity.account import IBaseAccount
+from assetsapi.entity.space import ICellSpaceRemoteCall
 
 logger = logging.getLogger()
 
 
-class Avatar(IBaseAvatarAPI, KBEngine.Proxy, GameObject, Teleport):
+class Avatar(IBaseAvatar, Teleport, GameObject, KBEngine.Proxy):
     """Role entity."""
 
     def __init__(self):
@@ -19,14 +22,14 @@ class Avatar(IBaseAvatarAPI, KBEngine.Proxy, GameObject, Teleport):
         GameObject.__init__(self)
         Teleport.__init__(self)
 
-        self.accountEntity = None
+        self.accountEntity: Optional[IBaseAccount] = None
         self.cellData["dbid"] = self.databaseID
         self.nameB = self.cellData["name"]
         self.spaceUTypeB = self.cellData["spaceUType"]
 
         self._destroyTimer = 0
 
-    def createCell(self, space):
+    def createCell(self, space: ICellSpaceRemoteCall):
         """Create cell entity."""
         self.createCellEntity(space)
 
@@ -40,7 +43,7 @@ class Avatar(IBaseAvatarAPI, KBEngine.Proxy, GameObject, Teleport):
             return
 
         # If the account ENTITY exists, it is also notified to destroy it
-        if self.accountEntity != None:
+        if self.accountEntity is not None:
             if time.time() - self.accountEntity.relogin > 1:
                 self.accountEntity.destroy()
             else:
@@ -90,7 +93,7 @@ class Avatar(IBaseAvatarAPI, KBEngine.Proxy, GameObject, Teleport):
         logger.debug("Avatar::onDestroy: %i." % self.id)
 
         if self.accountEntity != None:
-            self.accountEntity.activeAvatar = None
+            self.accountEntity.activeAvatar = None # type: ignore
             self.accountEntity = None
 
     def onDestroyTimer(self):

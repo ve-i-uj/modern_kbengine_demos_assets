@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from Poller import Poller
 import os
 import KBEngine

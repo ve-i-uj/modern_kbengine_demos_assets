@@ -1,22 +1,22 @@
-# -*- coding: utf-8 -*-
-from assetsapi.kbeapi.cellapp import KBEngine
-import SCDefine
-import time
-import random
-import GlobalDefine
 import logging
+import random
 
-logger = logging.getLogger() 
-from skillbases.SCObject import SCObject
+import SCDefine
+import GlobalDefine
 
-import d_entities
+from assetsapi.kbeapi.cellapp import KBEngine
+from assetsapi.interfaces.ai import ICellAI
+
+logger = logging.getLogger()
+
 
 __TERRITORY_AREA__ = 30.0
 
-class AI:
+class AI(ICellAI):
+
 	def __init__(self):
 		self.enable()
-	
+
 	def initEntity(self):
 		"""
 		virtual method.
@@ -31,7 +31,7 @@ class AI:
 		ret = self.position.distTo(self.spawnPos) <= __TERRITORY_AREA__
 		if not ret:
 			logger.info("%s::checkInTerritory: %i is False." % (self.getScriptName(), self.id))
-			
+
 		return ret
 
 	def addTerritory(self):
@@ -42,12 +42,12 @@ class AI:
 		assert self.territoryControllerID == 0 and "territoryControllerID != 0"
 		trange = __TERRITORY_AREA__ / 2.0
 		self.territoryControllerID = self.addProximity(trange, 0, 0)
-		
+
 		if self.territoryControllerID <= 0:
 			logger.error("%s::addTerritory: %i, range=%i, is error!" % (self.getScriptName(), self.id, trange))
 		else:
 			logger.info("%s::addTerritory: %i range=%i, id=%i." % (self.getScriptName(), self.id, trange, self.territoryControllerID))
-			
+
 	def delTerritory(self):
 		"""
 		删除领地
@@ -56,21 +56,21 @@ class AI:
 			self.cancelController(self.territoryControllerID)
 			self.territoryControllerID = 0
 			logger.info("%s::delTerritory: %i" % (self.getScriptName(), self.id))
-			
+
 	def enable(self):
 		"""
 		激活entity
 		"""
 		self.heartBeatTimerID = \
 		self.addTimer(random.randint(0, 1), 1, SCDefine.TIMER_TYPE_HEARDBEAT)				# 心跳timer, 每1秒一次
-		
+
 	def disable(self):
 		"""
 		禁止这个entity做任何行为
 		"""
 		self.delTimer(self.heartBeatTimerID)
 		self.heartBeatTimerID = 0
-	
+
 	def think(self):
 		"""
 		virtual method.
@@ -81,10 +81,10 @@ class AI:
 			self.onThinkFight()
 		else:
 			self.onThinkOther()
-		
+
 		if not self.isWitnessed:
 			self.disable()
-		
+
 	def choiceTarget(self):
 		"""
 		从仇恨表选择一个敌人
@@ -93,14 +93,14 @@ class AI:
 			self.targetID = self.enemyLog[0]
 		else:
 			self.targetID = 0
-	
+
 	def setTarget(self, entityID):
 		"""
 		设置目标
 		"""
 		self.targetID = entityID
 		self.onTargetChanged()
-	
+
 	#--------------------------------------------------------------------------------------------
 	#                              Callbacks
 	#--------------------------------------------------------------------------------------------
@@ -109,14 +109,14 @@ class AI:
 		entity的心跳
 		"""
 		self.think()
-		
+
 	def onTargetChanged(self):
 		"""
 		virtual method.
 		目标改变
 		"""
 		pass
-		
+
 	def onWitnessed(self, isWitnessed):
 		"""
 		KBEngine method.
@@ -126,10 +126,10 @@ class AI:
 		@param isWitnessed	: 为false时， entity脱离了任何观察者的观察
 		"""
 		logger.info("%s::onWitnessed: %i isWitnessed=%i." % (self.getScriptName(), self.id, isWitnessed))
-		
+
 		if isWitnessed:
 			self.enable()
-			
+
 	def onThinkFree(self):
 		"""
 		virtual method.
@@ -137,7 +137,7 @@ class AI:
 		"""
 		if self.territoryControllerID <= 0:
 			self.addTerritory()
-		
+
 		self.randomWalk(self.spawnPos)
 
 	def onThinkFight(self):
@@ -147,19 +147,19 @@ class AI:
 		"""
 		if self.territoryControllerID > 0:
 			self.delTerritory()
-		
+
 		self.checkEnemys()
-		
+
 		if self.targetID <= 0:
 			return
-		
+
 		dragon = (self.modelID == 20002001)
 
 		# demo简单实现， 如果是龙的话， 攻击距离比较远, 攻击距离应该调用不同技能来判定
 		attackMaxDist = 2.0
 		if dragon:
 			attackMaxDist = 20.0
-			
+
 		entity = KBEngine.entities.get(self.targetID)
 
 		if entity.position.distTo(self.position) > attackMaxDist:
@@ -170,20 +170,20 @@ class AI:
 			return
 		else:
 			self.resetSpeed()
-			
+
 			skillID = 1
 			if dragon:
 				skillID = 7000101
 
 			self.spellTarget(skillID, entity.id)
-			
+
 	def onThinkOther(self):
 		"""
 		virtual method.
 		其他时think
 		"""
 		pass
-		
+
 	def onForbidChanged_(self, forbid, isInc):
 		"""
 		virtual method.
@@ -200,7 +200,7 @@ class AI:
 		if self.isState(GlobalDefine.ENTITY_STATE_DEAD):
 			if self.isMoving:
 				self.stopMotion()
-				
+
 	def onSubStateChanged_(self, oldSubState, newSubState):
 		"""
 		virtual method.
@@ -214,7 +214,7 @@ class AI:
 		virtual method.
 		"""
 		pass
-	
+
 	def onEnterTrap(self, entityEntering, range_xz, range_y, controllerID, userarg):
 		"""
 		KBEngine method.
@@ -222,17 +222,17 @@ class AI:
 		"""
 		if controllerID != self.territoryControllerID:
 			return
-		
+
 		if entityEntering.isDestroyed or entityEntering.getScriptName() != "Avatar" or entityEntering.isDead():
 			return
-		
+
 		if not self.isState(GlobalDefine.ENTITY_STATE_FREE):
 			return
-			
+
 		logger.debug("%s::onEnterTrap: %i entityEntering=(%s)%i, range_xz=%s, range_y=%s, controllerID=%i, userarg=%i" % \
 						(self.getScriptName(), self.id, entityEntering.getScriptName(), entityEntering.id, \
 						range_xz, range_y, controllerID, userarg))
-		
+
 		self.addEnemy(entityEntering.id, 0)
 
 	def onLeaveTrap(self, entityLeaving, range_xz, range_y, controllerID, userarg):
@@ -242,10 +242,10 @@ class AI:
 		"""
 		if controllerID != self.territoryControllerID:
 			return
-		
+
 		if entityLeaving.isDestroyed or entityLeaving.getScriptName() != "Avatar" or entityLeaving.isDead():
 			return
-			
+
 		logger.info("%s::onLeaveTrap: %i entityLeaving=(%s)%i." % (self.getScriptName(), self.id, \
 				entityLeaving.getScriptName(), entityLeaving.id))
 
@@ -256,10 +256,10 @@ class AI:
 		"""
 		if not self.isState(GlobalDefine.ENTITY_STATE_FIGHT):
 			self.changeState(GlobalDefine.ENTITY_STATE_FIGHT)
-		
+
 		if self.targetID == 0:
 			self.setTarget(entityID)
-			
+
 	def onRemoveEnemy(self, entityID):
 		"""
 		virtual method.
@@ -274,9 +274,9 @@ class AI:
 		"""
 		logger.info("%s::onLoseTarget: %i target=%i, enemyLogSize=%i." % (self.getScriptName(), self.id, \
 				self.targetID, len(self.enemyLog)))
-				
+
 		self.targetID = 0
-		
+
 		if len(self.enemyLog) > 0:
 			self.choiceTarget()
 
@@ -289,9 +289,9 @@ class AI:
 
 		if not self.isState(GlobalDefine.ENTITY_STATE_FREE):
 			self.changeState(GlobalDefine.ENTITY_STATE_FREE)
-			
+
 		self.backSpawnPos()
-		
+
 	def onTimer(self, tid, userArg):
 		"""
 		KBEngine method.

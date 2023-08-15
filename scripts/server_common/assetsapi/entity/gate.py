@@ -1,45 +1,44 @@
-"""API сущности "Gate" сгенерированный по её описанию в Gate.def.
+"""Интерфейс сущности "Gate" сгенерированный по её описанию в Gate.def.
 
 See file:///./../../../../scripts/entity_defs/Gate.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientGateRemoteCallAPI(ClientEntityCallAPI):
+class IClientGateRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class BaseGateRemoteCallAPI(BaseEntityCallAPI):
+class IBaseGateRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'Gate'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class CellGateRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellGateRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'Gate'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-
-
-class IBaseGateAPI(abc.ABC, BaseEntityAPI):
+class IBaseGateEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
 
         @property
         def client(self) -> None:
@@ -49,11 +48,10 @@ class IBaseGateAPI(abc.ABC, BaseEntityAPI):
         def cell(self) -> None:
             return None
 
-class ICellGateAPI(abc.ABC, CellEntityAPI):
+class ICellGateEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
 
         @property
         def base(self) -> None:
@@ -72,5 +70,15 @@ class ICellGateAPI(abc.ABC, CellEntityAPI):
             return None
 
 
+class IBaseGate(IBaseGateEntityCall, IBaseEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
+
+
+class ICellGate(ICellGateEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
 
 # --- Components API (if the entity has components) ---

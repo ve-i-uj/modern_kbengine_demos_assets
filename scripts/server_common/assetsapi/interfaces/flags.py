@@ -1,45 +1,44 @@
-"""API сущности "Flags" сгенерированный по её описанию в Flags.def.
+"""Интерфейс сущности "Flags" сгенерированный по её описанию в Flags.def.
 
 See file:///./../../../../scripts/entity_defs/Flags.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientFlagsRemoteCallAPI(ClientEntityCallAPI):
+class IClientFlagsRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class BaseFlagsRemoteCallAPI(BaseEntityCallAPI):
+class IBaseFlagsRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'Flags'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class CellFlagsRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellFlagsRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'Flags'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-
-
-class IBaseFlagsAPI(abc.ABC, BaseEntityAPI):
+class IBaseFlagsEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
 
         @property
         def client(self) -> None:
@@ -49,12 +48,10 @@ class IBaseFlagsAPI(abc.ABC, BaseEntityAPI):
         def cell(self) -> None:
             return None
 
-class ICellFlagsAPI(abc.ABC, CellEntityAPI):
+class ICellFlagsEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
-        flags: int
 
         @property
         def base(self) -> None:
@@ -73,5 +70,17 @@ class ICellFlagsAPI(abc.ABC, CellEntityAPI):
             return None
 
 
+class IBaseFlags(IBaseFlagsEntityCall, IBaseEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
+
+
+class ICellFlags(ICellFlagsEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+        """file:///./../../../../scripts/entity_defs/interfaces/Flags.def#3"""
+        flags: int
 
 # --- Components API (if the entity has components) ---

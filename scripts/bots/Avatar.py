@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
+
 import KBEngine
 import KBExtra
 import random, math
-import Math
+from assetsapi.kbeapi import Math
 import time
 import d_spaces
 import GlobalDefine

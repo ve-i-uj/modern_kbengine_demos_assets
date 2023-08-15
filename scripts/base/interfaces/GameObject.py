@@ -1,15 +1,13 @@
-# -*- coding: utf-8 -*-
-from assetsapi.kbeapi.baseapp import KBEngine
 import logging
+
+from assetsapi.kbeapi.baseapp import KBEngine
+from assetsapi.interfaces.gameobject import IBaseGameObject
 
 logger = logging.getLogger()
 
-class GameObject:
-	"""
-	服务端游戏对象的基础接口类
-	"""
-	def __init__(self):
-		pass
+
+class GameObject(IBaseGameObject):
+	"""The basic interface class of the server game object."""
 
 	def getScriptName(self):
 		return self.__class__.__name__
@@ -22,50 +20,31 @@ class GameObject:
 			# 销毁cell实体
 			self.destroyCellEntity()
 			return
-			
+
 		# 销毁base
 		self.destroy()
-		
+
 	def getSpaces(self):
-		"""
-		获取场景管理器
-		"""
+		"""Get scene manager."""
 		return KBEngine.globalData["Spaces"]
 
 	#--------------------------------------------------------------------------------------------
 	#                              Callbacks
 	#--------------------------------------------------------------------------------------------
-	def onTimer(self, tid, userArg):
-		"""
-		KBEngine method.
-		引擎回调timer触发
-		"""
+
+	def onTimer(self, timerHandle: int, userData: int = 0):
 		#logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
 		if self.isDestroyed:
-			self.delTimer(tid)
+			self.delTimer(timerHandle)
 			return
-			
+
 	def onGetCell(self):
-		"""
-		KBEngine method.
-		entity的cell部分实体被创建成功
-		"""
 		#logger.debug("%s::onGetCell: %i" % (self.getScriptName(), self.id))
 		pass
-		
+
 	def onLoseCell(self):
-		"""
-		KBEngine method.
-		entity的cell部分实体丢失
-		"""
 		logger.debug("%s::onLoseCell: %i" % (self.getScriptName(), self.id))
 		self.destroySelf()
 
 	def onRestore(self):
-		"""
-		KBEngine method.
-		entity的cell部分实体被恢复成功
-		"""
 		logger.debug("%s::onRestore: %s" % (self.getScriptName(), self.cell))
-		
-

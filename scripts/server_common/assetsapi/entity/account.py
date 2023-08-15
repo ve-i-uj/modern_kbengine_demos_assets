@@ -1,148 +1,160 @@
-"""API сущности "Account" сгенерированный по её описанию в Account.def.
+"""Интерфейс сущности "Account" сгенерированный по её описанию в Account.def.
 
 See file:///./../../../../scripts/entity_defs/Account.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientAccountRemoteCallAPI(ClientEntityCallAPI):
+class IClientAccountRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE:
+
         def onReqAvatarList(self,
-                            arg_0: TAvatarInfosList):
-            pass
+                            characters: TAvatarInfosList):
+            """file:///./../../../../scripts/entity_defs/Account.def#35"""
+
 
         def onCreateAvatarResult(self,
                                  arg_0: int,
                                  arg_1: TAvatarInfos):
-            pass
+            """file:///./../../../../scripts/entity_defs/Account.def#47"""
+
 
         def onRemoveAvatar(self,
                            arg_0: Dbid):
-            pass
+            """file:///./../../../../scripts/entity_defs/Account.def#53"""
 
 
 
-class BaseAccountRemoteCallAPI(BaseEntityCallAPI):
+class IBaseAccountRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'Account'."""
 
     if not assetsapi.IN_THE_ENGINE:
 
 
         def reqAvatarList(self):
-            pass
+            """file:///./../../../../scripts/entity_defs/Account.def#59"""
 
 
         def reqCreateAvatar(self,
                             roleType: int,
                             name: str):
-            pass
+            """file:///./../../../../scripts/entity_defs/Account.def#64"""
 
 
         def selectAvatarGame(self,
                              dbid: Dbid):
-            pass
+            """file:///./../../../../scripts/entity_defs/Account.def#71"""
 
 
         def reqRemoveAvatar(self,
                             name: str):
-            pass
+            """file:///./../../../../scripts/entity_defs/Account.def#77"""
 
 
         def reqRemoveAvatarDBID(self,
                                 dbid: Dbid):
-            pass
+            """file:///./../../../../scripts/entity_defs/Account.def#82"""
 
 
-class CellAccountRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellAccountRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'Account'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-
-
-class IBaseAccountAPI(abc.ABC, ProxyEntityAPI):
+class IBaseAccountEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-        characters: AvatarInfosList
-        lastSelCharacter: Dbid
-        activeCharacter: EntityCall
-        lastClientIpAddr: int
-
         @property
-        def client(self) -> ClientAccountRemoteCallAPI:
-            return ClientAccountRemoteCallAPI()
+        def client(self) -> IClientAccountRemoteCall:
+            return IClientAccountRemoteCall()
 
         @property
         def cell(self) -> None:
             return None
 
-        @abc.abstractmethod
         def reqAvatarList(self):
-            pass
+            """file:///./../../../../scripts/entity_defs/Account.def#59"""
 
-
-        @abc.abstractmethod
         def reqCreateAvatar(self,
                             roleType: int,
                             name: str):
-            pass
+            """file:///./../../../../scripts/entity_defs/Account.def#64"""
 
-
-        @abc.abstractmethod
         def selectAvatarGame(self,
                              dbid: Dbid):
-            pass
+            """file:///./../../../../scripts/entity_defs/Account.def#71"""
 
-
-        @abc.abstractmethod
         def reqRemoveAvatar(self,
                             name: str):
-            pass
+            """file:///./../../../../scripts/entity_defs/Account.def#77"""
 
-
-        @abc.abstractmethod
         def reqRemoveAvatarDBID(self,
                                 dbid: Dbid):
-            pass
+            """file:///./../../../../scripts/entity_defs/Account.def#82"""
 
-
-class ICellAccountAPI(abc.ABC, CellEntityAPI):
+class ICellAccountEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
+        @property
+        def base(self) -> IBaseAccountRemoteCall:
+            return IBaseAccountRemoteCall()
 
         @property
-        def base(self) -> BaseAccountRemoteCallAPI:
-            return BaseAccountRemoteCallAPI()
+        def client(self) -> IClientAccountRemoteCall:
+            return IClientAccountRemoteCall()
 
         @property
-        def client(self) -> ClientAccountRemoteCallAPI:
-            return ClientAccountRemoteCallAPI()
+        def allClients(self) -> IClientAccountRemoteCall:
+            return IClientAccountRemoteCall()
 
         @property
-        def allClients(self) -> ClientAccountRemoteCallAPI:
-            return ClientAccountRemoteCallAPI()
-
-        @property
-        def otherClients(self) -> ClientAccountRemoteCallAPI:
-            return ClientAccountRemoteCallAPI()
+        def otherClients(self) -> IClientAccountRemoteCall:
+            return IClientAccountRemoteCall()
 
 
+class IBaseAccount(IBaseAccountEntityCall, IProxyEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+
+        """file:///./../../../../scripts/entity_defs/Account.def#3"""
+        characters: AvatarInfosList
+
+        """file:///./../../../../scripts/entity_defs/Account.def#10"""
+        lastSelCharacter: Dbid
+
+        """file:///./../../../../scripts/entity_defs/Account.def#17"""
+        activeCharacter: EntityCall
+
+        """file:///./../../../../scripts/entity_defs/Account.def#22"""
+        lastClientIpAddr: int
+
+        """file:///./../../../../scripts/entity_defs/Account.def#28"""
+        relogin: float
+
+
+class ICellAccount(ICellAccountEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
 
 # --- Components API (if the entity has components) ---

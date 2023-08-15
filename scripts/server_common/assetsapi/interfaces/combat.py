@@ -1,110 +1,122 @@
-"""API сущности "Combat" сгенерированный по её описанию в Combat.def.
+"""Интерфейс сущности "Combat" сгенерированный по её описанию в Combat.def.
 
 See file:///./../../../../scripts/entity_defs/Combat.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientCombatRemoteCallAPI(ClientEntityCallAPI):
+class IClientCombatRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE:
+
         def recvDamage(self,
                        arg_0: EntityId,
                        arg_1: Skillid,
                        arg_2: DamageType,
                        arg_3: Hp):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/Combat.def#29"""
 
 
 
-class BaseCombatRemoteCallAPI(BaseEntityCallAPI):
+class IBaseCombatRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'Combat'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class CellCombatRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellCombatRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'Combat'."""
 
     if not assetsapi.IN_THE_ENGINE:
-
 
         def recvDamage(self,
                        arg_0: EntityId,
                        arg_1: Skillid,
                        arg_2: DamageType,
                        arg_3: Hp):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/Combat.def#15"""
+
 
         def addEnemy(self,
                      arg_0: EntityId,
                      arg_1: Enmity):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/Combat.def#22"""
 
 
 
-class IBaseCombatAPI(abc.ABC, BaseEntityAPI):
+class IBaseCombatEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
+        @property
+        def client(self) -> IClientCombatRemoteCall:
+            return IClientCombatRemoteCall()
 
         @property
-        def client(self) -> ClientCombatRemoteCallAPI:
-            return ClientCombatRemoteCallAPI()
+        def cell(self) -> ICellCombatRemoteCall:
+            return ICellCombatRemoteCall()
 
-        @property
-        def cell(self) -> CellCombatRemoteCallAPI:
-            return CellCombatRemoteCallAPI()
-
-class ICellCombatAPI(abc.ABC, CellEntityAPI):
+class ICellCombatEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
-        enemyLog: EntityidList
 
         @property
         def base(self) -> None:
             return None
 
         @property
-        def client(self) -> ClientCombatRemoteCallAPI:
-            return ClientCombatRemoteCallAPI()
+        def client(self) -> IClientCombatRemoteCall:
+            return IClientCombatRemoteCall()
 
         @property
-        def allClients(self) -> ClientCombatRemoteCallAPI:
-            return ClientCombatRemoteCallAPI()
+        def allClients(self) -> IClientCombatRemoteCall:
+            return IClientCombatRemoteCall()
 
         @property
-        def otherClients(self) -> ClientCombatRemoteCallAPI:
-            return ClientCombatRemoteCallAPI()
+        def otherClients(self) -> IClientCombatRemoteCall:
+            return IClientCombatRemoteCall()
 
-
-        @abc.abstractmethod
         def recvDamage(self,
                        arg_0: EntityId,
                        arg_1: Skillid,
                        arg_2: DamageType,
                        arg_3: Hp):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/Combat.def#15"""
 
-        @abc.abstractmethod
+
         def addEnemy(self,
                      arg_0: EntityId,
                      arg_1: Enmity):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/Combat.def#22"""
 
+
+
+class IBaseCombat(IBaseCombatEntityCall, IBaseEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
+
+
+class ICellCombat(ICellCombatEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+        """file:///./../../../../scripts/entity_defs/interfaces/Combat.def#7"""
+        enemyLog: EntityidList
 
 # --- Components API (if the entity has components) ---

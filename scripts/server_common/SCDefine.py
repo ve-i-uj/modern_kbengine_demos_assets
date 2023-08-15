@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-import KBEngine
-import GlobalConst
 import logging
 
-logger = logging.getLogger() 
+logger = logging.getLogger()
 
 
 # 服务端timer定义

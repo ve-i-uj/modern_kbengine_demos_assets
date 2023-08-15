@@ -1,67 +1,62 @@
-"""API сущности "State" сгенерированный по её описанию в State.def.
+"""Интерфейс сущности "State" сгенерированный по её описанию в State.def.
 
 See file:///./../../../../scripts/entity_defs/State.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientStateRemoteCallAPI(ClientEntityCallAPI):
+class IClientStateRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class BaseStateRemoteCallAPI(BaseEntityCallAPI):
+class IBaseStateRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'State'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class CellStateRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellStateRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'State'."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-
         def changeState(self,
                         arg_0: EntityState):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/State.def#31"""
 
 
 
-class IBaseStateAPI(abc.ABC, BaseEntityAPI):
+class IBaseStateEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
 
         @property
         def client(self) -> None:
             return None
 
         @property
-        def cell(self) -> CellStateRemoteCallAPI:
-            return CellStateRemoteCallAPI()
+        def cell(self) -> ICellStateRemoteCall:
+            return ICellStateRemoteCall()
 
-class ICellStateAPI(abc.ABC, CellEntityAPI):
+class ICellStateEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
-        state: EntityState
-        subState: EntitySubstate
-        forbids: EntityForbids
-        _forbidCounter: EntityForbidCounter
 
         @property
         def base(self) -> None:
@@ -79,11 +74,29 @@ class ICellStateAPI(abc.ABC, CellEntityAPI):
         def otherClients(self) -> None:
             return None
 
-
-        @abc.abstractmethod
         def changeState(self,
                         arg_0: EntityState):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/State.def#31"""
 
+
+
+class IBaseState(IBaseStateEntityCall, IBaseEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
+
+
+class ICellState(ICellStateEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+        """file:///./../../../../scripts/entity_defs/interfaces/State.def#3"""
+        state: EntityState
+        """file:///./../../../../scripts/entity_defs/interfaces/State.def#11"""
+        subState: EntitySubstate
+        """file:///./../../../../scripts/entity_defs/interfaces/State.def#17"""
+        forbids: EntityForbids
+        """file:///./../../../../scripts/entity_defs/interfaces/State.def#24"""
+        _forbidCounter: EntityForbidCounter
 
 # --- Components API (if the entity has components) ---

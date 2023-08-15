@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from assetsapi.kbeapi.baseapp import KBEngine
 import GlobalConst
 import logging

@@ -9,15 +9,17 @@ import SCDefine
 from interfaces.GameObject import GameObject
 
 from assetsapi.kbeapi.baseapp import KBEngine
-from assetsapi.entity.space import IBaseSpaceAPI
-from assetsapi.entity.avatar import BaseAvatarRemoteCallAPI
+from assetsapi.entity.space import IBaseSpace
+from assetsapi.entity.avatar import IBaseAvatarEntityCall
+from assetsapi.entity.spaces import IBaseSpacesEntityCall
+from assetsapi.interfaces.teleport import IBaseTeleportEntityCall
 
-from assetsapi.typesxml import EntityId
+from assetsapi.typesxml import Direction3d, EntityId, Position3d
 
 logger = logging.getLogger()
 
 
-class Space(IBaseSpaceAPI, KBEngine.Entity, GameObject):
+class Space(IBaseSpace, GameObject, KBEngine.Entity):
     """An entity that can manipulate the real space on the cellapp.
 
     Note: It is an entity, not a real space. The real space exists in the
@@ -39,10 +41,10 @@ class Space(IBaseSpaceAPI, KBEngine.Entity, GameObject):
         # The total number of entities created on this map
         self.tmpCreateEntityDatas = copy.deepcopy(d_spaces_spawns.datas.get(self.spaceUTypeB, []))
 
-        self.avatars: dict[EntityId, BaseAvatarRemoteCallAPI] = {}
-        self.createSpawnPointDatas()
+        self.avatars: dict[EntityId, IBaseAvatarEntityCall] = {}
+        self._createSpawnPointDatas()
 
-    def createSpawnPointDatas(self):
+    def _createSpawnPointDatas(self):
         res = r"scripts\data\spawnpoints\%s_spawnpoints.xml" % (
             self.spaceResName.replace("\\", "/").split("/")[-1]
         )
@@ -54,7 +56,7 @@ class Space(IBaseSpaceAPI, KBEngine.Entity, GameObject):
         tree: etree.ElementTree = etree.parse(res)
         root: etree.Element = tree.getroot()
 
-        logger.debug("Space::createSpawnPointDatas: %s" % (res))
+        logger.debug("[%s]: %s" % (self, res))
 
         for child in root:
             positionNode = child[0][0]
@@ -122,7 +124,7 @@ class Space(IBaseSpaceAPI, KBEngine.Entity, GameObject):
                                        "modelScale": datas[3],
                                        "createToCell": self.cell})
 
-    def loginToSpace(self, avatarEntityCall: BaseAvatarRemoteCallAPI, context: dict):
+    def loginToSpace(self, avatarEntityCall: IBaseAvatarEntityCall, context: dict):
         """A player requests to log in to this space.
 
         defined method.
@@ -131,14 +133,15 @@ class Space(IBaseSpaceAPI, KBEngine.Entity, GameObject):
         avatarEntityCall.createCell(self.cell)
         self.onEnter(avatarEntityCall)
 
-    def logoutSpace(self, entityID):
+    def logoutSpace(self, entityID: EntityId):
         """A player requests to log out of this space.
 
         defined method.
         """
         self.onLeave(entityID)
 
-    def teleportSpace(self, entityCall, position, direction, context):
+    def teleportSpace(self, entityCall: IBaseTeleportEntityCall, position: Position3d,
+                      direction: Direction3d, context: dict):
         """Request to enter a space.
 
         defined method.
@@ -151,7 +154,7 @@ class Space(IBaseSpaceAPI, KBEngine.Entity, GameObject):
 
         GameObject.onTimer(self, timerHandle, userData)
 
-    def onEnter(self, entityCall: BaseAvatarRemoteCallAPI):
+    def onEnter(self, entityCall: IBaseAvatarEntityCall):
         """Enter the scene.
 
         defined method.
@@ -161,7 +164,7 @@ class Space(IBaseSpaceAPI, KBEngine.Entity, GameObject):
         if self.cell is not None:
             self.cell.onEnter(entityCall)
 
-    def onLeave(self, entityID):
+    def onLeave(self, entityID: EntityId):
         """Leave the scene.
 
         defined method.
@@ -179,5 +182,6 @@ class Space(IBaseSpaceAPI, KBEngine.Entity, GameObject):
     def onGetCell(self):
         logger.debug("Space::onGetCell: %i" % self.id)
         self.addTimer(0.1, 0.1, SCDefine.TIMER_TYPE_SPACE_SPAWN_TICK)
-        KBEngine.globalData["Spaces"].onSpaceGetCell(self.spaceUTypeB, self, self.spaceKey)
+        spaces: IBaseSpacesEntityCall = KBEngine.globalData["Spaces"]
+        spaces.onSpaceGetCell(self.spaceUTypeB, self, self.spaceKey)
         GameObject.onGetCell(self)

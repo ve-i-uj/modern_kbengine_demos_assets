@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 import skills
 import dialogmgr
 from assetsapi.kbeapi.cellapp import KBEngine

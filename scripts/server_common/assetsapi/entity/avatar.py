@@ -1,140 +1,213 @@
-"""API сущности "Avatar" сгенерированный по её описанию в Avatar.def.
+"""Интерфейс сущности "Avatar" сгенерированный по её описанию в Avatar.def.
 
 See file:///./../../../../scripts/entity_defs/Avatar.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
-from ..components.test import ClientTestComponentRemoteCallAPI, \
-    CellTestComponentRemoteCallAPI, BaseTestComponentRemoteCallAPI
-from ..components.testnobase import ClientTestNoBaseComponentRemoteCallAPI, \
-    CellTestNoBaseComponentRemoteCallAPI, BaseTestNoBaseComponentRemoteCallAPI
+from ..components.test import IClientTestComponentRemoteCall, \
+    ICellTestComponentRemoteCall, IBaseTestComponentRemoteCall
+from ..components.testnobase import IClientTestNoBaseComponentRemoteCall, \
+    ICellTestNoBaseComponentRemoteCall, IBaseTestNoBaseComponentRemoteCall
 
 
-class ClientAvatarRemoteCallAPI(ClientEntityCallAPI):
+class IClientAvatarRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE:
+
         def onJump(self):
-            pass
-
-        component1: ClientTestComponentRemoteCallAPI
-        component2: ClientTestComponentRemoteCallAPI
-        component3: ClientTestNoBaseComponentRemoteCallAPI
+            """file:///./../../../../scripts/entity_defs/Avatar.def#103"""
 
 
-class BaseAvatarRemoteCallAPI(BaseEntityCallAPI):
+        @property
+        def component1(self) -> IClientTestComponentRemoteCall:
+            """file:///./../../../../scripts/entity_defs/components/Test.def"""
+            return IClientTestComponentRemoteCall()
+
+        @property
+        def component2(self) -> IClientTestComponentRemoteCall:
+            """file:///./../../../../scripts/entity_defs/components/Test.def"""
+            return IClientTestComponentRemoteCall()
+
+        @property
+        def component3(self) -> IClientTestNoBaseComponentRemoteCall:
+            """file:///./../../../../scripts/entity_defs/components/TestNoBase.def"""
+            return IClientTestNoBaseComponentRemoteCall()
+
+
+class IBaseAvatarRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'Avatar'."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-        component1: BaseTestComponentRemoteCallAPI
-        component2: BaseTestComponentRemoteCallAPI
-        component3: BaseTestNoBaseComponentRemoteCallAPI
 
         def createCell(self,
                        arg_0: EntityCall):
-            pass
+            """file:///./../../../../scripts/entity_defs/Avatar.def#83"""
 
 
-class CellAvatarRemoteCallAPI(CellEntityCallAPI):
+        def destroySelf(self):
+            """file:///./../../../../scripts/entity_defs/Avatar.def#87"""
+
+
+        @property
+        def component1(self) -> IBaseTestComponentRemoteCall:
+            """file:///./../../../../scripts/entity_defs/components/Test.def"""
+            return IBaseTestComponentRemoteCall()
+
+        @property
+        def component2(self) -> IBaseTestComponentRemoteCall:
+            """file:///./../../../../scripts/entity_defs/components/Test.def"""
+            return IBaseTestComponentRemoteCall()
+
+        @property
+        def component3(self) -> IBaseTestNoBaseComponentRemoteCall:
+            """file:///./../../../../scripts/entity_defs/components/TestNoBase.def"""
+            return IBaseTestNoBaseComponentRemoteCall()
+
+
+
+class ICellAvatarRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'Avatar'."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-
         def relive(self,
                    arg_0: int):
-            pass
+            """file:///./../../../../scripts/entity_defs/Avatar.def#92"""
+
 
         def jump(self):
-            pass
-
-        component1: CellTestComponentRemoteCallAPI
-        component2: CellTestComponentRemoteCallAPI
-        component3: CellTestNoBaseComponentRemoteCallAPI
+            """file:///./../../../../scripts/entity_defs/Avatar.def#97"""
 
 
-class IBaseAvatarAPI(abc.ABC, ProxyEntityAPI):
+        @property
+        def component1(self) -> ICellTestComponentRemoteCall:
+            """file:///./../../../../scripts/entity_defs/components/Test.def"""
+            return ICellTestComponentRemoteCall()
+
+        @property
+        def component2(self) -> ICellTestComponentRemoteCall:
+            """file:///./../../../../scripts/entity_defs/components/Test.def"""
+            return ICellTestComponentRemoteCall()
+
+        @property
+        def component3(self) -> ICellTestNoBaseComponentRemoteCall:
+            """file:///./../../../../scripts/entity_defs/components/TestNoBase.def"""
+            return ICellTestNoBaseComponentRemoteCall()
+
+
+class IBaseAvatarEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-        roleType: int
+        @property
+        def client(self) -> IClientAvatarRemoteCall:
+            return IClientAvatarRemoteCall()
 
         @property
-        def client(self) -> ClientAvatarRemoteCallAPI:
-            return ClientAvatarRemoteCallAPI()
+        def cell(self) -> ICellAvatarRemoteCall:
+            return ICellAvatarRemoteCall()
 
-        @property
-        def cell(self) -> CellAvatarRemoteCallAPI:
-            return CellAvatarRemoteCallAPI()
-
-        @abc.abstractmethod
         def createCell(self,
                        arg_0: EntityCall):
-            pass
+            """file:///./../../../../scripts/entity_defs/Avatar.def#83"""
 
+        def destroySelf(self):
+            """file:///./../../../../scripts/entity_defs/Avatar.def#87"""
 
-class ICellAvatarAPI(abc.ABC, CellEntityAPI):
+class ICellAvatarEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-        level: int
-        own_val: int
+        @property
+        def base(self) -> IBaseAvatarRemoteCall:
+            return IBaseAvatarRemoteCall()
 
         @property
-        def base(self) -> BaseAvatarRemoteCallAPI:
-            return BaseAvatarRemoteCallAPI()
+        def client(self) -> IClientAvatarRemoteCall:
+            return IClientAvatarRemoteCall()
 
         @property
-        def client(self) -> ClientAvatarRemoteCallAPI:
-            return ClientAvatarRemoteCallAPI()
+        def allClients(self) -> IClientAvatarRemoteCall:
+            return IClientAvatarRemoteCall()
 
         @property
-        def allClients(self) -> ClientAvatarRemoteCallAPI:
-            return ClientAvatarRemoteCallAPI()
+        def otherClients(self) -> IClientAvatarRemoteCall:
+            return IClientAvatarRemoteCall()
 
-        @property
-        def otherClients(self) -> ClientAvatarRemoteCallAPI:
-            return ClientAvatarRemoteCallAPI()
-
-
-        @abc.abstractmethod
         def relive(self,
                    entity_caller_id: int,
                    arg_0: int):
-            pass
+            """file:///./../../../../scripts/entity_defs/Avatar.def#92"""
 
-        @abc.abstractmethod
+
         def jump(self,
                  entity_caller_id: int):
-            pass
+            """file:///./../../../../scripts/entity_defs/Avatar.def#97"""
 
+
+
+class IBaseAvatar(IBaseAvatarEntityCall, IProxyEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+
+        """file:///./../../../../scripts/entity_defs/Avatar.def#47"""
+        roleType: int
+
+        """file:///./../../../../scripts/entity_defs/Avatar.def#76"""
+        accountEntity: EntityCall
+
+
+class ICellAvatar(ICellAvatarEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+        """file:///./../../../../scripts/entity_defs/Avatar.def#53"""
+        level: int
+        """own_val comment (file:///./../../../../scripts/entity_defs/Avatar.def#71)"""
+        own_val: int
 
 # --- Components API (if the entity has components) ---
 
 
-class IBaseTestComponentOfAvatar(abc.ABC, BaseEntityComponentAPI):
+class IBaseTestComponentOfAvatar(IBaseEntityComponent):
     """<Parent>	TestBase	</Parent> (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-        client: ClientTestComponentRemoteCallAPI
-        cell: CellTestComponentRemoteCallAPI
+        @property
+        def client(self) -> IClientTestComponentRemoteCall:
+            return IClientTestComponentRemoteCall()
 
         @property
-        def owner(self) -> IBaseAvatarAPI:
-            return IBaseAvatarAPI() # type: ignore
+        def cell(self) -> ICellTestComponentRemoteCall:
+            return ICellTestComponentRemoteCall()
+
+        @property
+        def bb(self) -> int:
+            """file:///./../../../../scripts/entity_defs/Avatar.def#19"""
+            return int()
+
+        @bb.setter
+        def bb(self, value: int):
+            pass
+
+        @property
+        def owner(self) -> IBaseAvatar:
+            return IBaseAvatar() # type: ignore
 
         @property
         def className(self) -> str:
@@ -144,27 +217,63 @@ class IBaseTestComponentOfAvatar(abc.ABC, BaseEntityComponentAPI):
         def name(self) -> str:
             return "component1" or "component2"
 
-        bb: int
 
-        @abc.abstractmethod
         def say(self,
                 arg_0: int):
-            pass
+            """file:///./../../../../scripts/entity_defs/Avatar.def#41"""
 
 
-class ICellTestComponentOfAvatar(abc.ABC, CellEntityComponentAPI):
+class ICellTestComponentOfAvatar(ICellEntityComponent):
     """<Parent>	TestBase	</Parent> (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-        client: ClientTestComponentRemoteCallAPI
-        allClients: ClientTestComponentRemoteCallAPI
-        otherClients: ClientTestComponentRemoteCallAPI
-        base: BaseTestComponentRemoteCallAPI
+        @property
+        def client(self) -> IClientTestComponentRemoteCall:
+            return IClientTestComponentRemoteCall()
 
         @property
-        def owner(self) -> ICellAvatarAPI:
-            return ICellAvatarAPI() # type: ignore
+        def allClients(self) -> IClientTestComponentRemoteCall:
+            return IClientTestComponentRemoteCall()
+
+        @property
+        def otherClients(self) -> IClientTestComponentRemoteCall:
+            return IClientTestComponentRemoteCall()
+
+        @property
+        def base(self) -> IBaseTestComponentRemoteCall:
+            return IBaseTestComponentRemoteCall()
+
+        @property
+        def state(self) -> int:
+            """file:///./../../../../scripts/entity_defs/Avatar.def#5"""
+            return int()
+
+        @state.setter
+        def state(self, value: int):
+            pass
+
+        @property
+        def own(self) -> int:
+            """file:///./../../../../scripts/entity_defs/Avatar.def#12"""
+            return int()
+
+        @own.setter
+        def own(self, value: int):
+            pass
+
+        @property
+        def cc(self) -> int:
+            """file:///./../../../../scripts/entity_defs/Avatar.def#26"""
+            return int()
+
+        @cc.setter
+        def cc(self, value: int):
+            pass
+
+        @property
+        def owner(self) -> ICellAvatarEntityCall:
+            return ICellAvatarEntityCall() # type: ignore
 
         @property
         def className(self) -> str:
@@ -174,28 +283,29 @@ class ICellTestComponentOfAvatar(abc.ABC, CellEntityComponentAPI):
         def name(self) -> str:
             return "component1" or "component2"
 
-            state: int
-            own: int
-            cc: int
-
-        @abc.abstractmethod
         def hello(self,
                   entity_caller_id: int,
                   arg_0: int):
-            pass
+            """file:///./../../../../scripts/entity_defs/Test.def#34"""
 
 
-class IBaseTestNoBaseComponentOfAvatar(abc.ABC, BaseEntityComponentAPI):
+class IBaseTestNoBaseComponentOfAvatar(IBaseEntityComponent):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-        client: ClientTestNoBaseComponentRemoteCallAPI
-        cell: CellTestNoBaseComponentRemoteCallAPI
+        @property
+        def client(self) -> IClientTestNoBaseComponentRemoteCall:
+            return IClientTestNoBaseComponentRemoteCall()
 
         @property
-        def owner(self) -> IBaseAvatarAPI:
-            return IBaseAvatarAPI() # type: ignore
+        def cell(self) -> ICellTestNoBaseComponentRemoteCall:
+            return ICellTestNoBaseComponentRemoteCall()
+
+
+        @property
+        def owner(self) -> IBaseAvatar:
+            return IBaseAvatar() # type: ignore
 
         @property
         def className(self) -> str:
@@ -207,20 +317,57 @@ class IBaseTestNoBaseComponentOfAvatar(abc.ABC, BaseEntityComponentAPI):
 
 
 
-
-class ICellTestNoBaseComponentOfAvatar(abc.ABC, CellEntityComponentAPI):
+class ICellTestNoBaseComponentOfAvatar(ICellEntityComponent):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-        client: ClientTestNoBaseComponentRemoteCallAPI
-        allClients: ClientTestNoBaseComponentRemoteCallAPI
-        otherClients: ClientTestNoBaseComponentRemoteCallAPI
-        base: BaseTestNoBaseComponentRemoteCallAPI
+        @property
+        def client(self) -> IClientTestNoBaseComponentRemoteCall:
+            return IClientTestNoBaseComponentRemoteCall()
 
         @property
-        def owner(self) -> ICellAvatarAPI:
-            return ICellAvatarAPI() # type: ignore
+        def allClients(self) -> IClientTestNoBaseComponentRemoteCall:
+            return IClientTestNoBaseComponentRemoteCall()
+
+        @property
+        def otherClients(self) -> IClientTestNoBaseComponentRemoteCall:
+            return IClientTestNoBaseComponentRemoteCall()
+
+        @property
+        def base(self) -> IBaseTestNoBaseComponentRemoteCall:
+            return IBaseTestNoBaseComponentRemoteCall()
+
+        @property
+        def state(self) -> int:
+            """file:///./../../../../scripts/entity_defs/Avatar.def#3"""
+            return int()
+
+        @state.setter
+        def state(self, value: int):
+            pass
+
+        @property
+        def own(self) -> int:
+            """file:///./../../../../scripts/entity_defs/Avatar.def#10"""
+            return int()
+
+        @own.setter
+        def own(self, value: int):
+            pass
+
+        @property
+        def cc(self) -> int:
+            """file:///./../../../../scripts/entity_defs/Avatar.def#17"""
+            return int()
+
+        @cc.setter
+        def cc(self, value: int):
+            pass
+
+        @property
+        def owner(self) -> ICellAvatarEntityCall:
+            return ICellAvatarEntityCall() # type: ignore
 
         @property
         def className(self) -> str:
@@ -230,12 +377,7 @@ class ICellTestNoBaseComponentOfAvatar(abc.ABC, CellEntityComponentAPI):
         def name(self) -> str:
             return "component3"
 
-            state: int
-            own: int
-            cc: int
-
-        @abc.abstractmethod
         def hello(self,
                   entity_caller_id: int,
                   arg_0: int):
-            pass
+            """file:///./../../../../scripts/entity_defs/TestNoBase.def#25"""

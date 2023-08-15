@@ -4,12 +4,11 @@ See file:///./../../../scripts/entity_defs/types.xml
 """
 
 from typing import Type, Any, List, Dict, Tuple
-from .kbeapi import EntityCall
-from .kbeapi.Math import Vector2, Vector3, Vector4
 
 from typing_extensions import TypedDict
 
-
+from .kbeapi import IEntityCall as EntityCall
+from .kbeapi.Math import Vector2, Vector3, Vector4
 
 Uint8 = int
 Uint16 = int

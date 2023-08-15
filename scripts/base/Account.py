@@ -1,23 +1,25 @@
 import logging
-from typing import Optional
-
-import d_avatar_inittab
 import random
 import time
+from typing import Optional, Union
+
+import d_avatar_inittab
 import d_spaces
 import GlobalConst
 from AVATAR_INFOS import TAvatarInfos
-from AVATAR_INFOS import TAvatarInfosList
 from AVATAR_DATA import TAvatarData
 
-from assetsapi.entity.account import IBaseAccountAPI
+from assetsapi.kbeapi import IBaseEntity, IEntityCall
 from assetsapi.kbeapi.baseapp import KBEngine
-from assetsapi.kbeapi import ProxyEntityAPI
+from assetsapi.entity.account import IBaseAccount
+from assetsapi.entity.avatar import IBaseAvatar
+
+from assetsapi.typesxml import Dbid
 
 logger = logging.getLogger()
 
 
-class Account(IBaseAccountAPI, KBEngine.Proxy):
+class Account(IBaseAccount, KBEngine.Proxy):
     """Account entity.
 
     After the client logs in to the server, the server will automatically
@@ -26,7 +28,7 @@ class Account(IBaseAccountAPI, KBEngine.Proxy):
 
     def __init__(self):
         KBEngine.Proxy.__init__(self)
-        self.activeAvatar: Optional[ProxyEntityAPI] = None
+        self.activeAvatar: Optional[IBaseAvatar] = None
         self.relogin = time.time()
 
     def reqAvatarList(self):
@@ -37,7 +39,7 @@ class Account(IBaseAccountAPI, KBEngine.Proxy):
         logger.debug("Account[%i].reqAvatarList: size=%i." % (self.id, len(self.characters)))
         self.client.onReqAvatarList(self.characters)
 
-    def reqCreateAvatar(self, roleType, name):
+    def reqCreateAvatar(self, roleType: int, name: str):
         """Client requests to create a role.
 
         exposed.
@@ -100,7 +102,7 @@ class Account(IBaseAccountAPI, KBEngine.Proxy):
         logger.debug("Account[%i].reqCreateAvatar:%s. spaceUType=%i, spawnPos=%s.\n" %
                      (self.id, name, avatar.cellData["spaceUType"], spaceData.get("spawnPos", (0, 0, 0))))
 
-    def reqRemoveAvatar(self, name):
+    def reqRemoveAvatar(self, name: str):
         """Client requests to delete a role.
 
         exposed.
@@ -115,7 +117,7 @@ class Account(IBaseAccountAPI, KBEngine.Proxy):
 
         self.client.onRemoveAvatar(found)
 
-    def reqRemoveAvatarDBID(self, dbid):
+    def reqRemoveAvatarDBID(self, dbid: Dbid):
         """Client requests to delete a role.
 
         exposed.
@@ -129,7 +131,7 @@ class Account(IBaseAccountAPI, KBEngine.Proxy):
 
         self.client.onRemoveAvatar(found)
 
-    def selectAvatarGame(self, dbid):
+    def selectAvatarGame(self, dbid: Dbid):
         """The client selects a character to play the game
 
         exposed.
@@ -150,7 +152,7 @@ class Account(IBaseAccountAPI, KBEngine.Proxy):
        			# entity that gains control will call onClientEnabled
 				# Avatar inherits Teleport, Teleport.onClientEnabled will create
     			# players in specific scenes
-       			# KBEngine.createEntityFromDBID("Avatar", dbid, self.__onAvatarCreated)
+                KBEngine.createEntityFromDBID("Avatar", dbid, self.__onAvatarCreated)
             else:
                 logger.error("Account[%i]::selectAvatarGame: not found dbid(%i)" % (self.id, dbid))
         else:
@@ -166,7 +168,7 @@ class Account(IBaseAccountAPI, KBEngine.Proxy):
                     (self.id, self.client, self.getClientType(), self.getClientDatas(),
                      self.activeAvatar, self.__ACCOUNT_NAME__))
 
-    def onLogOnAttempt(self, ip, port, password):
+    def onLogOnAttempt(self, ip: str, port: int, password: str):
         logger.info("Account[%i]::onLogOnAttempt: ip=%s, port=%i, selfclient=%s"
                     "" % (self.id, ip, port, self.client))
         """
@@ -215,23 +217,29 @@ class Account(IBaseAccountAPI, KBEngine.Proxy):
 
             self.activeAvatar = None
 
-    def __onAvatarCreated(self, baseRef, dbid, wasActive):
+    def __onAvatarCreated(self,
+                          baseRef: Optional[Union[IBaseEntity, IEntityCall]],
+                          dbid: int,
+                          wasActive: bool):
         """Called when a character is selected to enter the game."""
         if wasActive:
-            logger.error("Account::__onAvatarCreated:(%i): this character is in world now!" % (self.id))
+            logger.error("Account::__onAvatarCreated:(%i): this character is "
+                         "in world now!" % (self.id))
             return
         if baseRef is None:
-            logger.error("Account::__onAvatarCreated:(%i): the character you wanted to created is not exist!" % (self.id))
+            logger.error("Account::__onAvatarCreated:(%i): the character you "
+                         "wanted to created is not exist!" % (self.id))
             return
 
-        avatar = KBEngine.entities.get(baseRef.id)
-        assert isinstance(avatar, ProxyEntityAPI)
+        avatar: IBaseAvatar = KBEngine.entities.get(baseRef.id) # type: ignore
         if avatar is None:
-            logger.error("Account::__onAvatarCreated:(%i): when character was created, it died as well!" % (self.id))
+            logger.error("Account::__onAvatarCreated:(%i): when character was "
+                         "created, it died as well!" % (self.id))
             return
 
         if self.isDestroyed:
-            logger.error("Account::__onAvatarCreated:(%i): i dead, will the destroy of Avatar!" % (self.id))
+            logger.error("Account::__onAvatarCreated:(%i): i dead, will the "
+                         "destroy of Avatar!" % (self.id))
             avatar.destroy()
             return
 
@@ -243,8 +251,9 @@ class Account(IBaseAccountAPI, KBEngine.Proxy):
         self.activeAvatar = avatar
         self.giveClientTo(avatar)
 
-    def _onAvatarSaved(self, success, avatar):
+    def _onAvatarSaved(self, success: bool, avatar: IBaseAvatar):
         """New role write database callback."""
+
         logger.info('Account::_onAvatarSaved:(%i) create avatar state: %i, %s, %i' %
                     (self.id, success, avatar.cellData["name"], avatar.databaseID))
 

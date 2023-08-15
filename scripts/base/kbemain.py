@@ -4,7 +4,7 @@ from typing import Any, Tuple
 import Watcher
 import d_spaces
 
-from assetsapi.kbeapi.baseapp from assetsapi.kbeapi.baseapp import KBEngine
+from assetsapi.kbeapi.baseapp import KBEngine
 from assetstools import log
 
 logger = logging.getLogger()

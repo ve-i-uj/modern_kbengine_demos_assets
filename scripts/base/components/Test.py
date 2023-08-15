@@ -1,57 +1,44 @@
-# -*- coding: utf-8 -*-
-from assetsapi.kbeapi.baseapp import KBEngine
 import logging
+
+from assetsapi.kbeapi.baseapp import KBEngine
+from assetsapi.components.test import IBaseTestEntityComponent
+from assetsapi.kbeapi._entityapi import IBaseEntity
 
 logger = logging.getLogger()
 
-class Test(KBEngine.EntityComponent):
-	def __init__(self):
-		KBEngine.EntityComponent.__init__(self)
-		print("+++++++++++++++++++++++name=%s, bb=%i" % (self.name, self.bb))
 
-		if hasattr(self.owner, "cellData"):
-			print("+++++++++++++++++++++++cellData=%s" % self.owner.cellData[self.name])
+class Test(IBaseTestEntityComponent, KBEngine.EntityComponent):
 
-	def onAttached(self, owner):
-		"""
-		"""
-		logger.info("Test::onAttached(): owner=%i" % (owner.id))
+    def __init__(self):
+        KBEngine.EntityComponent.__init__(self)
+        logger.info("+++++++++++++++++++++++name=%s, bb=%i" % (self.name, self.bb))
 
-	def onDetached(self, owner):
-		"""
-		"""
-		logger.info("Test::onDetached(): owner=%i" % (owner.id))
+        if hasattr(self.owner, "cellData"):
+            logger.info("+++++++++++++++++++++++cellData=%s" % self.owner.cellData[self.name])
 
-	def say(self, iii):
-		print("+++++++++++++++++++++++say", iii)
-		if self.owner.cell is not None:
-			self.cell.hello(33321)
+    def onAttached(self, owner: IBaseEntity):
+        logger.info("Test::onAttached(): owner=%i" % (owner.id))
 
-	def onClientEnabled(self):
-		"""
-		KBEngine method.
-		该entity被正式激活为可使用， 此时entity已经建立了client对应实体， 可以在此创建它的
-		cell部分。
-		"""
-		logger.info("Test[%i]::onClientEnabled:entities enable." % (self.ownerID))
-		self.tid = self.addTimer(10, 0, 123)
+    def onDetached(self, owner: IBaseEntity):
+        logger.info("Test::onDetached(): owner=%i" % (owner.id))
 
-	def onClientDeath(self):
-		"""
-		KBEngine method.
-		客户端对应实体已经销毁
-		"""
-		logger.debug("Test[%i].onClientDeath:" % self.ownerID)
+    def say(self, iii: int):
+        logger.info("+++++++++++++++++++++++say %s", iii)
+        if self.owner.cell is not None:
+            self.cell.hello(33321)
 
-		if self.tid > 0:
-			self.delTimer(self.tid)
+    def onClientEnabled(self):
+        logger.info("Test[%i]::onClientEnabled:entities enable." % (self.ownerID))
+        self.tid = self.addTimer(10, 0, 123)
 
-	def onTimer(self, tid, userArg):
-		"""
-		KBEngine method.
-		引擎回调timer触发
-		"""
-		logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.name, self.ownerID, tid, userArg))
+    def onClientDeath(self):
+        logger.debug("Test[%i].onClientDeath:" % self.ownerID)
 
-		if self.tid == tid:
-			self.tid = 0
+        if self.tid > 0:
+            self.delTimer(self.tid)
+
+    def onTimer(self, tid: int, userArg: int):
+        logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.name, self.ownerID, tid, userArg))
+
+        if self.tid == tid:
+            self.tid = 0

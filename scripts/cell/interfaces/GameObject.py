@@ -1,16 +1,17 @@
-# -*- coding: utf-8 -*-
-from assetsapi.kbeapi.cellapp import KBEngine
-import d_spaces
-import SCDefine
-import GlobalDefine
 import logging
-
-logger = logging.getLogger() 
+from assetsapi.interfaces.gameobject import ICellGameObject
 
 import d_entities
 import d_avatar_inittab
+import SCDefine
+import GlobalDefine
 
-class GameObject:
+from assetsapi.kbeapi.cellapp import KBEngine
+
+logger = logging.getLogger()
+
+
+class GameObject(ICellGameObject):
 	"""
 	服务端游戏对象的基础接口类
 	"""
@@ -22,7 +23,7 @@ class GameObject:
 		virtual method.
 		"""
 		pass
-	
+
 	def isPlayer(self):
 		"""
 		virtual method.
@@ -34,22 +35,22 @@ class GameObject:
 		virtual method.
 		"""
 		return False
-		
+
 	def isMonster(self):
 		"""
 		virtual method.
 		"""
 		return False
-	
+
 	def getDatas(self):
 		if self.isPlayer():
 			return d_avatar_inittab.datas[self.uid]
-		
+
 		return d_entities.datas[self.uid]
-		
+
 	def getScriptName(self):
 		return self.__class__.__name__
-		
+
 	def getCurrSpaceBase(self):
 		"""
 		获得当前space的entity baseEntityCall
@@ -62,23 +63,23 @@ class GameObject:
 		"""
 		spaceBase = self.getCurrSpaceBase()
 		return KBEngine.entities.get(spaceBase.id, None)
-		
+
 	def getSpaces(self):
 		"""
 		获取场景管理器
 		"""
 		return KBEngine.globalData["Spaces"]
-	
+
 	def startDestroyTimer(self):
 		"""
 		virtual method.
-		
+
 		启动销毁entitytimer
 		"""
 		if self.isState(GlobalDefine.ENTITY_STATE_DEAD):
 			self.addTimer(5, 0, SCDefine.TIMER_TYPE_DESTROY)
 			logger.debug("%s::startDestroyTimer: %i running." % (self.getScriptName(), self.id))
-	
+
 	#--------------------------------------------------------------------------------------------
 	#                              Callbacks
 	#--------------------------------------------------------------------------------------------
@@ -90,14 +91,14 @@ class GameObject:
 		#logger.debug("%s::onTimer: %i, tid:%i, arg:%i" % (self.getScriptName(), self.id, tid, userArg))
 		if SCDefine.TIMER_TYPE_DESTROY == userArg:
 			self.onDestroyEntityTimer()
-			
+
 	def onStateChanged_(self, oldstate, newstate):
 		"""
 		virtual method.
 		entity状态改变了
 		"""
 		self.startDestroyTimer()
-			
+
 	def onWitnessed(self, isWitnessed):
 		"""
 		KBEngine method.
@@ -107,7 +108,7 @@ class GameObject:
 		@param isWitnessed	: 为false时， entity脱离了任何观察者的观察
 		"""
 		logger.debug("%s::onWitnessed: %i isWitnessed=%i." % (self.getScriptName(), self.id, isWitnessed))
-		
+
 	def onEnterTrap(self, entityEntering, range_xz, range_y, controllerID, userarg):
 		"""
 		KBEngine method.

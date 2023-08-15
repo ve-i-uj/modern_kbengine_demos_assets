@@ -1,45 +1,44 @@
-"""API сущности "NPCObject" сгенерированный по её описанию в NPCObject.def.
+"""Интерфейс сущности "NPCObject" сгенерированный по её описанию в NPCObject.def.
 
 See file:///./../../../../scripts/entity_defs/NPCObject.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientNPCObjectRemoteCallAPI(ClientEntityCallAPI):
+class IClientNPCObjectRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class BaseNPCObjectRemoteCallAPI(BaseEntityCallAPI):
+class IBaseNPCObjectRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'NPCObject'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class CellNPCObjectRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellNPCObjectRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'NPCObject'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-
-
-class IBaseNPCObjectAPI(abc.ABC, BaseEntityAPI):
+class IBaseNPCObjectEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
 
         @property
         def client(self) -> None:
@@ -49,14 +48,10 @@ class IBaseNPCObjectAPI(abc.ABC, BaseEntityAPI):
         def cell(self) -> None:
             return None
 
-class ICellNPCObjectAPI(abc.ABC, CellEntityAPI):
+class ICellNPCObjectEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
-        spawnID: EntityId
-        spawnPos: Vector3
-        entityNO: EntityNo
 
         @property
         def base(self) -> None:
@@ -75,5 +70,21 @@ class ICellNPCObjectAPI(abc.ABC, CellEntityAPI):
             return None
 
 
+class IBaseNPCObject(IBaseNPCObjectEntityCall, IBaseEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
+
+
+class ICellNPCObject(ICellNPCObjectEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+        """file:///./../../../../scripts/entity_defs/interfaces/NPCObject.def#6"""
+        spawnID: EntityId
+        """file:///./../../../../scripts/entity_defs/interfaces/NPCObject.def#11"""
+        spawnPos: Vector3
+        """file:///./../../../../scripts/entity_defs/interfaces/NPCObject.def#17"""
+        entityNO: EntityNo
 
 # --- Components API (if the entity has components) ---

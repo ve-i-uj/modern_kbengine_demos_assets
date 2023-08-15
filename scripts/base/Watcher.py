@@ -1,22 +1,23 @@
-# -*- coding: utf-8 -*-
-from assetsapi.kbeapi.baseapp import KBEngine
 import logging
+
+from assetsapi.kbeapi.baseapp import KBEngine
 
 logger = logging.getLogger()
 
-def countPlayers():
-	"""
-	KBEngine.addWatcher("players", "UINT32", countPlayers)
-	上面代码将这个函数添加到监视器中，可以从GUIConsole等工具中实时监视到函数返回值
-	"""
-	i = 0
-	for e in KBEngine.entities.values():
-		if e.__class__.__name__ == "Avatar":
-			i += 1
 
-	return i
-	
+def countPlayers():
+    """
+    KBEngine.addWatcher("players", "UINT32", countPlayers)
+    The above code adds this function to the monitor, and the return value
+    of the function can be monitored in real time from tools such as GUIConsole
+    """
+    i = 0
+    for e in KBEngine.entities.values():
+        if e.__class__.__name__ == "Avatar":
+            i += 1
+
+    return i
 
 
 def setup():
-	KBEngine.addWatcher("players", "UINT32", countPlayers)
+    KBEngine.addWatcher("players", "UINT32", countPlayers)

@@ -1,45 +1,44 @@
-"""API сущности "Motion" сгенерированный по её описанию в Motion.def.
+"""Интерфейс сущности "Motion" сгенерированный по её описанию в Motion.def.
 
 See file:///./../../../../scripts/entity_defs/Motion.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientMotionRemoteCallAPI(ClientEntityCallAPI):
+class IClientMotionRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class BaseMotionRemoteCallAPI(BaseEntityCallAPI):
+class IBaseMotionRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'Motion'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class CellMotionRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellMotionRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'Motion'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-
-
-class IBaseMotionAPI(abc.ABC, BaseEntityAPI):
+class IBaseMotionEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
 
         @property
         def client(self) -> None:
@@ -49,14 +48,10 @@ class IBaseMotionAPI(abc.ABC, BaseEntityAPI):
         def cell(self) -> None:
             return None
 
-class ICellMotionAPI(abc.ABC, CellEntityAPI):
+class ICellMotionEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
-        moveSpeed: int
-        isMoving: Bool
-        nextMoveTime: int
 
         @property
         def base(self) -> None:
@@ -75,5 +70,21 @@ class ICellMotionAPI(abc.ABC, CellEntityAPI):
             return None
 
 
+class IBaseMotion(IBaseMotionEntityCall, IBaseEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
+
+
+class ICellMotion(ICellMotionEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+        """file:///./../../../../scripts/entity_defs/interfaces/Motion.def#6"""
+        moveSpeed: int
+        """file:///./../../../../scripts/entity_defs/interfaces/Motion.def#12"""
+        isMoving: Bool
+        """file:///./../../../../scripts/entity_defs/interfaces/Motion.def#18"""
+        nextMoveTime: int
 
 # --- Components API (if the entity has components) ---

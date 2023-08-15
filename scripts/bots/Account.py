@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 import KBEngine
 import copy
 import logging

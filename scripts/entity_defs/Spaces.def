@@ -25,11 +25,11 @@
 		</logoutSpace>
 
 		<teleportSpace>
-			<Arg>		ENTITYCALL		</Arg>
-			<Arg>		ENTITY_UTYPE	</Arg>
-			<Arg>		POSITION3D		</Arg>
-			<Arg>		DIRECTION3D		</Arg>
-			<Arg>		PYTHON			</Arg>
+			<Arg>		ENTITYCALL		</Arg> <!-- entityCall -->
+			<Arg>		ENTITY_UTYPE	</Arg> <!-- spaceUType -->
+			<Arg>		POSITION3D		</Arg> <!-- position -->
+			<Arg>		DIRECTION3D		</Arg> <!-- direction -->
+			<Arg>		PYTHON			</Arg> <!-- context -->
 		</teleportSpace>
 
 		<onSpaceLoseCell>
@@ -47,4 +47,3 @@
 	<CellMethods>
 	</CellMethods>
 </root>
-

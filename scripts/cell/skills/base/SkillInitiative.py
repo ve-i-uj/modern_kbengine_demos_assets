@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from assetsapi.kbeapi.cellapp import KBEngine
 import random
 import GlobalConst

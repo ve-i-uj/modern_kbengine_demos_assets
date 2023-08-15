@@ -1,27 +1,27 @@
-"""API сущности "Space" сгенерированный по её описанию в Space.def.
+"""Интерфейс сущности "Space" сгенерированный по её описанию в Space.def.
 
 See file:///./../../../../scripts/entity_defs/Space.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientSpaceRemoteCallAPI(ClientEntityCallAPI):
+class IClientSpaceRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class BaseSpaceRemoteCallAPI(BaseEntityCallAPI):
+class IBaseSpaceRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'Space'."""
 
     if not assetsapi.IN_THE_ENGINE:
@@ -30,108 +30,95 @@ class BaseSpaceRemoteCallAPI(BaseEntityCallAPI):
         def loginToSpace(self,
                          arg_0: EntityCall,
                          arg_1: dict):
-            pass
+            """file:///./../../../../scripts/entity_defs/Space.def#33"""
 
 
         def logoutSpace(self,
                         arg_0: EntityId):
-            pass
+            """file:///./../../../../scripts/entity_defs/Space.def#38"""
 
 
         def teleportSpace(self,
-                          arg_0: EntityCall,
-                          arg_1: Position3d,
-                          arg_2: Direction3d,
-                          arg_3: dict):
-            pass
+                          entityCall: EntityCall,
+                          position: Position3d,
+                          direction: Direction3d,
+                          context: dict):
+            """file:///./../../../../scripts/entity_defs/Space.def#42"""
 
 
         def onEnter(self,
                     arg_0: EntityCall):
-            pass
+            """file:///./../../../../scripts/entity_defs/Space.def#49"""
 
 
         def onLeave(self,
                     arg_0: EntityId):
-            pass
+            """file:///./../../../../scripts/entity_defs/Space.def#53"""
 
 
-class CellSpaceRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellSpaceRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'Space'."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-
         def onEnter(self,
                     arg_0: EntityCall):
-            pass
+            """file:///./../../../../scripts/entity_defs/Space.def#59"""
+
 
         def onLeave(self,
                     arg_0: EntityId):
-            pass
+            """file:///./../../../../scripts/entity_defs/Space.def#63"""
 
 
 
-class IBaseSpaceAPI(abc.ABC, BaseEntityAPI):
+class IBaseSpaceEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
-        spaceKey: Dbid
-        context: dict
 
         @property
         def client(self) -> None:
             return None
 
         @property
-        def cell(self) -> CellSpaceRemoteCallAPI:
-            return CellSpaceRemoteCallAPI()
+        def cell(self) -> ICellSpaceRemoteCall:
+            return ICellSpaceRemoteCall()
 
-        @abc.abstractmethod
         def loginToSpace(self,
                          arg_0: EntityCall,
                          arg_1: dict):
-            pass
+            """file:///./../../../../scripts/entity_defs/Space.def#33"""
 
-
-        @abc.abstractmethod
         def logoutSpace(self,
                         arg_0: EntityId):
-            pass
+            """file:///./../../../../scripts/entity_defs/Space.def#38"""
 
-
-        @abc.abstractmethod
         def teleportSpace(self,
-                          arg_0: EntityCall,
-                          arg_1: Position3d,
-                          arg_2: Direction3d,
-                          arg_3: dict):
-            pass
+                          entityCall: EntityCall,
+                          position: Position3d,
+                          direction: Direction3d,
+                          context: dict):
+            """file:///./../../../../scripts/entity_defs/Space.def#42"""
 
-
-        @abc.abstractmethod
         def onEnter(self,
                     arg_0: EntityCall):
-            pass
+            """file:///./../../../../scripts/entity_defs/Space.def#49"""
 
-
-        @abc.abstractmethod
         def onLeave(self,
                     arg_0: EntityId):
-            pass
+            """file:///./../../../../scripts/entity_defs/Space.def#53"""
 
-
-class ICellSpaceAPI(abc.ABC, CellEntityAPI):
+class ICellSpaceEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-        spaceUType: int
-
         @property
-        def base(self) -> BaseSpaceRemoteCallAPI:
-            return BaseSpaceRemoteCallAPI()
+        def base(self) -> IBaseSpaceRemoteCall:
+            return IBaseSpaceRemoteCall()
 
         @property
         def client(self) -> None:
@@ -145,16 +132,34 @@ class ICellSpaceAPI(abc.ABC, CellEntityAPI):
         def otherClients(self) -> None:
             return None
 
-
-        @abc.abstractmethod
         def onEnter(self,
                     arg_0: EntityCall):
-            pass
+            """file:///./../../../../scripts/entity_defs/Space.def#59"""
 
-        @abc.abstractmethod
+
         def onLeave(self,
                     arg_0: EntityId):
-            pass
+            """file:///./../../../../scripts/entity_defs/Space.def#63"""
 
+
+
+class IBaseSpace(IBaseSpaceEntityCall, IBaseEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+
+        """file:///./../../../../scripts/entity_defs/Space.def#19"""
+        spaceKey: Dbid
+
+        """file:///./../../../../scripts/entity_defs/Space.def#25"""
+        context: dict
+
+
+class ICellSpace(ICellSpaceEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+        """file:///./../../../../scripts/entity_defs/Space.def#13"""
+        spaceUType: int
 
 # --- Components API (if the entity has components) ---

@@ -1,45 +1,44 @@
-"""API сущности "NPC" сгенерированный по её описанию в NPC.def.
+"""Интерфейс сущности "NPC" сгенерированный по её описанию в NPC.def.
 
 See file:///./../../../../scripts/entity_defs/NPC.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientNPCRemoteCallAPI(ClientEntityCallAPI):
+class IClientNPCRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class BaseNPCRemoteCallAPI(BaseEntityCallAPI):
+class IBaseNPCRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'NPC'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class CellNPCRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellNPCRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'NPC'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-
-
-class IBaseNPCAPI(abc.ABC, BaseEntityAPI):
+class IBaseNPCEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
 
         @property
         def client(self) -> None:
@@ -49,11 +48,10 @@ class IBaseNPCAPI(abc.ABC, BaseEntityAPI):
         def cell(self) -> None:
             return None
 
-class ICellNPCAPI(abc.ABC, CellEntityAPI):
+class ICellNPCEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
 
         @property
         def base(self) -> None:
@@ -72,5 +70,15 @@ class ICellNPCAPI(abc.ABC, CellEntityAPI):
             return None
 
 
+class IBaseNPC(IBaseNPCEntityCall, IBaseEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
+
+
+class ICellNPC(ICellNPCEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
 
 # --- Components API (if the entity has components) ---

@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
-from assetsapi.kbeapi.cellapp import KBEngine
 import logging
+
+from assetsapi.kbeapi.cellapp import KBEngine
+from assetsapi.components.testnobase import ICellTestNoBaseEntityComponent
 
 logger = logging.getLogger()
 
-class TestNoBase(KBEngine.EntityComponent):
+class TestNoBase(ICellTestNoBaseEntityComponent, KBEngine.EntityComponent):
 	def __init__(self):
 		KBEngine.EntityComponent.__init__(self)
 

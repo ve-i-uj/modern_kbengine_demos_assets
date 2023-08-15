@@ -1,53 +1,57 @@
-"""API сущности "TestNoBase" сгенерированный по её описанию в TestNoBase.def.
+"""интерефейс компонета сущности "TestNoBase" сгенерированный по её описанию в TestNoBase.def.
 
 See file:///./../../../../scripts/entity_defs/components/TestNoBase.def
 """
 
 from __future__ import annotations
 
-import abc
-
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCoponentCallAPI, \
-    CellEntityCoponentCallAPI, ClientEntityCoponentCallAPI, \
-        CellEntityComponentAPI, BaseEntityComponentAPI
+from assetsapi.kbeapi import IBaseEntityCoponentRemoteCall, \
+    ICellEntityCoponentRemoteCall, IClientEntityCoponentRemoteCall, \
+        ICellEntityComponent, IBaseEntityComponent
 
 from ..typesxml import *
 
 
-class ClientTestNoBaseComponentRemoteCallAPI(ClientEntityCoponentCallAPI):
+class IClientTestNoBaseComponentRemoteCall(IClientEntityCoponentRemoteCall):
     """The 'TestNoBase' entity component remote call to Client."""
 
     if not assetsapi.IN_THE_ENGINE:
 
         def helloCB(self,
                     arg_0: int):
-            pass
+            """file:///./../../../../scripts/entity_defs/components/TestNoBase.def#35"""
 
 
-class BaseTestNoBaseComponentRemoteCallAPI(BaseEntityCoponentCallAPI):
+class IBaseTestNoBaseComponentRemoteCall(IBaseEntityCoponentRemoteCall):
     """The 'TestNoBase' entity component remote call to Baseapp."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
-class CellTestNoBaseComponentRemoteCallAPI(CellEntityCoponentCallAPI):
+class ICellTestNoBaseComponentRemoteCall(ICellEntityCoponentRemoteCall):
     """The 'TestNoBase' entity component remote call to Cellapp."""
 
     if not assetsapi.IN_THE_ENGINE:
 
+
         def hello(self,
                   arg_0: int):
-            pass
+            """file:///./../../../../scripts/components/TestNoBase.def#25"""
 
 
 
-class IBaseTestNoBaseComponent(abc.ABC, BaseEntityComponentAPI):
+class IBaseTestNoBaseEntityComponent(IBaseEntityComponent):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-        client: ClientTestNoBaseComponentRemoteCallAPI
-        cell: CellTestNoBaseComponentRemoteCallAPI
+        @property
+        def client(self) -> IClientTestNoBaseComponentRemoteCall:
+            return IClientTestNoBaseComponentRemoteCall()
+
+        @property
+        def cell(self) -> ICellTestNoBaseComponentRemoteCall:
+            return ICellTestNoBaseComponentRemoteCall()
 
         @property
         def className(self) -> str:
@@ -55,27 +59,59 @@ class IBaseTestNoBaseComponent(abc.ABC, BaseEntityComponentAPI):
 
 
 
-
-class ICellTestNoBaseComponent(abc.ABC, CellEntityComponentAPI):
+class ICellTestNoBaseEntityComponent(ICellEntityComponent):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-        client: ClientTestNoBaseComponentRemoteCallAPI
-        allClients: ClientTestNoBaseComponentRemoteCallAPI
-        otherClients: ClientTestNoBaseComponentRemoteCallAPI
-        base: BaseTestNoBaseComponentRemoteCallAPI
+        @property
+        def client(self) -> IClientTestNoBaseComponentRemoteCall:
+            return IClientTestNoBaseComponentRemoteCall()
+
+        @property
+        def allClients(self) -> IClientTestNoBaseComponentRemoteCall:
+            return IClientTestNoBaseComponentRemoteCall()
+
+        @property
+        def otherClients(self) -> IClientTestNoBaseComponentRemoteCall:
+            return IClientTestNoBaseComponentRemoteCall()
+
+        @property
+        def base(self) -> IBaseTestNoBaseComponentRemoteCall:
+            return IBaseTestNoBaseComponentRemoteCall()
 
         @property
         def className(self) -> str:
             return 'TestNoBase'
 
-        state: int
-        own: int
-        cc: int
+        @property
+        def state(self) -> int:
+            """file:///./../../../../scripts/entity_defs/components/TestNoBase.def#3"""
+            return int()
 
-        @abc.abstractmethod
+        @state.setter
+        def state(self, value: int):
+            pass
+
+        @property
+        def own(self) -> int:
+            """file:///./../../../../scripts/entity_defs/components/TestNoBase.def#10"""
+            return int()
+
+        @own.setter
+        def own(self, value: int):
+            pass
+
+        @property
+        def cc(self) -> int:
+            """file:///./../../../../scripts/entity_defs/components/TestNoBase.def#17"""
+            return int()
+
+        @cc.setter
+        def cc(self, value: int):
+            pass
+
         def hello(self,
                   entity_caller_id: int,
                   arg_0: int):
-            pass
+            """file:///./../../../../scripts/components/TestNoBase.def#25"""

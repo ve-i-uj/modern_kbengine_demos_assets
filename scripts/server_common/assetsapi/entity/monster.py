@@ -1,45 +1,44 @@
-"""API сущности "Monster" сгенерированный по её описанию в Monster.def.
+"""Интерфейс сущности "Monster" сгенерированный по её описанию в Monster.def.
 
 See file:///./../../../../scripts/entity_defs/Monster.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientMonsterRemoteCallAPI(ClientEntityCallAPI):
+class IClientMonsterRemoteCall(IClientRemoteCall):
     """<Parent>	NPC	</Parent> (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class BaseMonsterRemoteCallAPI(BaseEntityCallAPI):
+class IBaseMonsterRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'Monster'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class CellMonsterRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellMonsterRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'Monster'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-
-
-class IBaseMonsterAPI(abc.ABC, BaseEntityAPI):
+class IBaseMonsterEntityCall(IEntityCall):
     """<Parent>	NPC	</Parent> (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
 
         @property
         def client(self) -> None:
@@ -49,11 +48,10 @@ class IBaseMonsterAPI(abc.ABC, BaseEntityAPI):
         def cell(self) -> None:
             return None
 
-class ICellMonsterAPI(abc.ABC, CellEntityAPI):
+class ICellMonsterEntityCall(IEntityCall):
     """<Parent>	NPC	</Parent> (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
 
         @property
         def base(self) -> None:
@@ -72,5 +70,15 @@ class ICellMonsterAPI(abc.ABC, CellEntityAPI):
             return None
 
 
+class IBaseMonster(IBaseMonsterEntityCall, IBaseEntity):
+    """<Parent>	NPC	</Parent> (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
+
+
+class ICellMonster(ICellMonsterEntityCall, ICellEntity):
+    """<Parent>	NPC	</Parent> (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
 
 # --- Components API (if the entity has components) ---

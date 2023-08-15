@@ -1,89 +1,93 @@
-# -*- coding: utf-8 -*-
-from assetsapi.kbeapi.cellapp import KBEngine
-import GlobalDefine
 import logging
 
-logger = logging.getLogger() 
+import GlobalDefine
+from assetsapi.entity.avatar import ICellAvatar
 from interfaces.CombatPropertys import CombatPropertys
 
-class Combat(CombatPropertys):
+from assetsapi.kbeapi.cellapp import KBEngine
+from assetsapi.interfaces.combat import ICellCombat
+
+logger = logging.getLogger()
+
+
+class Combat(ICellCombat, CombatPropertys):
 	"""
 	关于战斗的一些功能
 	"""
 	def __init__(self):
 		CombatPropertys.__init__(self)
-		
+
 	def canUpgrade(self):
 		"""
 		virtual method.
 		"""
 		return True
-		
+
 	def upgrade(self):
 		"""
 		for real
 		"""
 		if self.canUpgrade():
 			self.addLevel(1)
-			
+
 	def addLevel(self, lv):
 		"""
 		for real
 		"""
 		self.level += lv
 		self.onLevelChanged(lv)
-		
+
 	def isDead(self):
 		"""
 		"""
 		return self.state == GlobalDefine.ENTITY_STATE_DEAD
-		
+
 	def die(self, killerID):
 		"""
 		"""
 		if self.isDestroyed or self.isDead():
 			return
-		
+
 		if killerID == self.id:
 			killerID = 0
-			
+
 		logger.info("%s::die: %i i die. killerID:%i." % (self.getScriptName(), self.id, killerID))
 		killer = KBEngine.entities.get(killerID)
 		if killer:
 			killer.onKiller(self.id)
-			
+
 		self.onBeforeDie(killerID)
 		self.onDie(killerID)
 		self.changeState(GlobalDefine.ENTITY_STATE_DEAD)
 		self.onAfterDie(killerID)
-	
+
 	def canDie(self, attackerID, skillID, damageType, damage):
 		"""
 		virtual method.
 		是否可死亡
 		"""
 		return True
-		
+
 	def recvDamage(self, attackerID, skillID, damageType, damage):
 		"""
 		defined.
 		"""
 		if self.isDestroyed or self.isDead():
 			return
-		
+
 		self.addEnemy(attackerID, damage)
 
 		logger.debug("%s::recvDamage: %i attackerID=%i, skillID=%i, damageType=%i, damage=%i" % \
 			(self.getScriptName(), self.id, attackerID, skillID, damageType, damage))
-			
+
 		if self.HP <= damage:
 			if self.canDie(attackerID, skillID, damageType, damage):
 				self.die(attackerID)
 		else:
 			self.setHP(self.HP - damage)
-		
+
 		self.allClients.recvDamage(attackerID, skillID, damageType, damage)
-		
+
 	def addEnemy(self, entityID, enmity):
 		"""
 		defined.
@@ -94,10 +98,10 @@ class Combat(CombatPropertys):
 
 		logger.debug("%s::addEnemy: %i entity=%i, enmity=%i" % \
 						(self.getScriptName(), self.id, entityID, enmity))
-		
+
 		self.enemyLog.append(entityID)
 		self.onAddEnemy(entityID)
-		
+
 	def removeEnemy(self, entityID):
 		"""
 		defined.
@@ -105,10 +109,10 @@ class Combat(CombatPropertys):
 		"""
 		logger.debug("%s::removeEnemy: %i entity=%i" % \
 						(self.getScriptName(), self.id, entityID))
-		
+
 		self.enemyLog.remove(entityID)
 		self.onRemoveEnemy(entityID)
-	
+
 		if len(self.enemyLog) == 0:
 			self.onEnemyEmpty()
 
@@ -128,9 +132,9 @@ class Combat(CombatPropertys):
 		if dist > 30.0:
 			logger.info("%s::checkEnemyDist: %i id=%i, dist=%f." % (self.getScriptName(), self.id, entity.id, dist))
 			return False
-		
+
 		return True
-		
+
 	def checkEnemys(self):
 		"""
 		检查敌人列表
@@ -149,7 +153,7 @@ class Combat(CombatPropertys):
 		virtual method.
 		"""
 		pass
-		
+
 	def onDie(self, killerID):
 		"""
 		virtual method.
@@ -168,20 +172,20 @@ class Combat(CombatPropertys):
 		virtual method.
 		"""
 		pass
-	
+
 	def onKiller(self, entityID):
 		"""
 		defined.
 		我击杀了entity
 		"""
 		pass
-		
+
 	def onDestroy(self):
 		"""
 		entity销毁
 		"""
 		pass
-		
+
 	def onAddEnemy(self, entityID):
 		"""
 		virtual method.
@@ -202,4 +206,3 @@ class Combat(CombatPropertys):
 		敌人列表空了
 		"""
 		pass
-	

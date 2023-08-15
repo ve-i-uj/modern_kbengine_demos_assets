@@ -40,10 +40,10 @@
 		</logoutSpace>
 
 		<teleportSpace>
-			<Arg>		ENTITYCALL		</Arg>
-			<Arg>		POSITION3D		</Arg>
-			<Arg>		DIRECTION3D		</Arg>
-			<Arg>		PYTHON			</Arg>
+			<Arg>		ENTITYCALL		</Arg> <!-- entityCall -->
+			<Arg>		POSITION3D		</Arg> <!-- position -->
+			<Arg>		DIRECTION3D		</Arg> <!-- direction -->
+			<Arg>		PYTHON			</Arg> <!-- context -->
 		</teleportSpace>
 
 		<onEnter>
@@ -65,4 +65,3 @@
 		</onLeave>
 	</CellMethods>
 </root>
-

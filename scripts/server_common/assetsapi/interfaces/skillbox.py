@@ -1,123 +1,138 @@
-"""API сущности "SkillBox" сгенерированный по её описанию в SkillBox.def.
+"""Интерфейс сущности "SkillBox" сгенерированный по её описанию в SkillBox.def.
 
 See file:///./../../../../scripts/entity_defs/SkillBox.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientSkillBoxRemoteCallAPI(ClientEntityCallAPI):
+class IClientSkillBoxRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE:
+
         def onAddSkill(self,
                        arg_0: Skillid):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/SkillBox.def#32"""
+
 
         def onRemoveSkill(self,
                           arg_0: Skillid):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/SkillBox.def#36"""
 
 
 
-class BaseSkillBoxRemoteCallAPI(BaseEntityCallAPI):
+class IBaseSkillBoxRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'SkillBox'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class CellSkillBoxRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellSkillBoxRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'SkillBox'."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-
         def addSkill(self,
                      arg_0: Skillid):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/SkillBox.def#11"""
+
 
         def removeSkill(self,
                         arg_0: Skillid):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/SkillBox.def#15"""
+
 
         def requestPull(self):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/SkillBox.def#19"""
+
 
         def useTargetSkill(self,
                            arg_0: Skillid,
                            arg_1: EntityId):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/SkillBox.def#23"""
 
 
 
-class IBaseSkillBoxAPI(abc.ABC, BaseEntityAPI):
+class IBaseSkillBoxEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
 
+        @property
+        def client(self) -> IClientSkillBoxRemoteCall:
+            return IClientSkillBoxRemoteCall()
 
         @property
-        def client(self) -> ClientSkillBoxRemoteCallAPI:
-            return ClientSkillBoxRemoteCallAPI()
+        def cell(self) -> ICellSkillBoxRemoteCall:
+            return ICellSkillBoxRemoteCall()
 
-        @property
-        def cell(self) -> CellSkillBoxRemoteCallAPI:
-            return CellSkillBoxRemoteCallAPI()
-
-class ICellSkillBoxAPI(abc.ABC, CellEntityAPI):
+class ICellSkillBoxEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
-        skills: List
 
         @property
         def base(self) -> None:
             return None
 
         @property
-        def client(self) -> ClientSkillBoxRemoteCallAPI:
-            return ClientSkillBoxRemoteCallAPI()
+        def client(self) -> IClientSkillBoxRemoteCall:
+            return IClientSkillBoxRemoteCall()
 
         @property
-        def allClients(self) -> ClientSkillBoxRemoteCallAPI:
-            return ClientSkillBoxRemoteCallAPI()
+        def allClients(self) -> IClientSkillBoxRemoteCall:
+            return IClientSkillBoxRemoteCall()
 
         @property
-        def otherClients(self) -> ClientSkillBoxRemoteCallAPI:
-            return ClientSkillBoxRemoteCallAPI()
+        def otherClients(self) -> IClientSkillBoxRemoteCall:
+            return IClientSkillBoxRemoteCall()
 
-
-        @abc.abstractmethod
         def addSkill(self,
                      arg_0: Skillid):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/SkillBox.def#11"""
 
-        @abc.abstractmethod
+
         def removeSkill(self,
                         arg_0: Skillid):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/SkillBox.def#15"""
 
-        @abc.abstractmethod
+
         def requestPull(self,
                         entity_caller_id: int):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/SkillBox.def#19"""
 
-        @abc.abstractmethod
+
         def useTargetSkill(self,
                            entity_caller_id: int,
                            arg_0: Skillid,
                            arg_1: EntityId):
-            pass
+            """file:///./../../../../scripts/entity_defs/interfaces/SkillBox.def#23"""
 
+
+
+class IBaseSkillBox(IBaseSkillBoxEntityCall, IBaseEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
+
+
+class ICellSkillBox(ICellSkillBoxEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+        """file:///./../../../../scripts/entity_defs/interfaces/SkillBox.def#3"""
+        skills: List
 
 # --- Components API (if the entity has components) ---

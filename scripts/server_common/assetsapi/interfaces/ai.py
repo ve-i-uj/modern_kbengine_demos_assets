@@ -1,45 +1,44 @@
-"""API сущности "AI" сгенерированный по её описанию в AI.def.
+"""Интерфейс сущности "AI" сгенерированный по её описанию в AI.def.
 
 See file:///./../../../../scripts/entity_defs/AI.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientAIRemoteCallAPI(ClientEntityCallAPI):
+class IClientAIRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class BaseAIRemoteCallAPI(BaseEntityCallAPI):
+class IBaseAIRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'AI'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class CellAIRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellAIRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'AI'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-
-
-class IBaseAIAPI(abc.ABC, BaseEntityAPI):
+class IBaseAIEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
 
         @property
         def client(self) -> None:
@@ -49,14 +48,10 @@ class IBaseAIAPI(abc.ABC, BaseEntityAPI):
         def cell(self) -> None:
             return None
 
-class ICellAIAPI(abc.ABC, CellEntityAPI):
+class ICellAIEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
-        targetID: EntityId
-        heartBeatTimerID: int
-        territoryControllerID: int
 
         @property
         def base(self) -> None:
@@ -75,5 +70,21 @@ class ICellAIAPI(abc.ABC, CellEntityAPI):
             return None
 
 
+class IBaseAI(IBaseAIEntityCall, IBaseEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE: pass
+
+
+class ICellAI(ICellAIEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+        """file:///./../../../../scripts/entity_defs/interfaces/AI.def#6"""
+        targetID: EntityId
+        """file:///./../../../../scripts/entity_defs/interfaces/AI.def#12"""
+        heartBeatTimerID: int
+        """file:///./../../../../scripts/entity_defs/interfaces/AI.def#18"""
+        territoryControllerID: int
 
 # --- Components API (if the entity has components) ---

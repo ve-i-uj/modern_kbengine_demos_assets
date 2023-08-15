@@ -1,65 +1,62 @@
-"""API сущности "SpawnPoint" сгенерированный по её описанию в SpawnPoint.def.
+"""Интерфейс сущности "SpawnPoint" сгенерированный по её описанию в SpawnPoint.def.
 
 See file:///./../../../../scripts/entity_defs/SpawnPoint.def
 """
 
 from __future__ import annotations
 
-import abc
+from typing import Optional
 
 import assetsapi
-from assetsapi.kbeapi import BaseEntityCallAPI, CellEntityCallAPI, \
-    ClientEntityCallAPI, BaseEntityAPI, CellEntityAPI, ProxyEntityAPI, \
-    BaseEntityComponentAPI, CellEntityComponentAPI
+from assetsapi.kbeapi import IBaseRemoteCall, ICellRemoteCall, \
+    IClientRemoteCall, IBaseEntity, ICellEntity, IProxyEntity, \
+    IBaseEntityComponent, ICellEntityComponent, IEntityCall
 
 from ..typesxml import *
 
 
-class ClientSpawnPointRemoteCallAPI(ClientEntityCallAPI):
+class IClientSpawnPointRemoteCall(IClientRemoteCall):
     """None (client component)."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class BaseSpawnPointRemoteCallAPI(BaseEntityCallAPI):
+class IBaseSpawnPointRemoteCall(IBaseRemoteCall):
     """Remote call to base component of the entity 'SpawnPoint'."""
 
     if not assetsapi.IN_THE_ENGINE: pass
 
 
-class CellSpawnPointRemoteCallAPI(CellEntityCallAPI):
+
+
+class ICellSpawnPointRemoteCall(ICellRemoteCall):
     """Remote call to cell component of the entity 'SpawnPoint'."""
 
     if not assetsapi.IN_THE_ENGINE:
 
-
         def onEntityDestroyed(self,
                               arg_0: EntityNo):
-            pass
+            """file:///./../../../../scripts/entity_defs/SpawnPoint.def#28"""
 
 
 
-class IBaseSpawnPointAPI(abc.ABC, BaseEntityAPI):
+class IBaseSpawnPointEntityCall(IEntityCall):
     """None (base component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
-        createToCell: EntityCall
 
         @property
         def client(self) -> None:
             return None
 
         @property
-        def cell(self) -> CellSpawnPointRemoteCallAPI:
-            return CellSpawnPointRemoteCallAPI()
+        def cell(self) -> ICellSpawnPointRemoteCall:
+            return ICellSpawnPointRemoteCall()
 
-class ICellSpawnPointAPI(abc.ABC, CellEntityAPI):
+class ICellSpawnPointEntityCall(IEntityCall):
     """None (cell component)."""
 
     if not assetsapi.IN_THE_ENGINE:
-
-        spawnEntityNO: int
 
         @property
         def base(self) -> None:
@@ -77,11 +74,26 @@ class ICellSpawnPointAPI(abc.ABC, CellEntityAPI):
         def otherClients(self) -> None:
             return None
 
-
-        @abc.abstractmethod
         def onEntityDestroyed(self,
                               arg_0: EntityNo):
-            pass
+            """file:///./../../../../scripts/entity_defs/SpawnPoint.def#28"""
 
+
+
+class IBaseSpawnPoint(IBaseSpawnPointEntityCall, IBaseEntity):
+    """None (base component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+
+        """file:///./../../../../scripts/entity_defs/SpawnPoint.def#17"""
+        createToCell: EntityCall
+
+
+class ICellSpawnPoint(ICellSpawnPointEntityCall, ICellEntity):
+    """None (cell component)."""
+
+    if not assetsapi.IN_THE_ENGINE:
+        """file:///./../../../../scripts/entity_defs/SpawnPoint.def#11"""
+        spawnEntityNO: int
 
 # --- Components API (if the entity has components) ---
